@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="395.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_btl.HelloController">
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="330.0" style="-fx-background-image: url('file:C:/Users/Administrator/IdeaProjects/JavaFX_BTL/src/main/resources/com/example/javafx_btl/background_main.png'); -fx-background-size: 350;" BorderPane.alignment="CENTER" />
+      <AnchorPane prefHeight="400.0" prefWidth="330.0" style="-fx-background-image: url('file:./background_main.png'); -fx-background-size: 350;" BorderPane.alignment="CENTER" />
    </left>
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="276.0" BorderPane.alignment="CENTER">
