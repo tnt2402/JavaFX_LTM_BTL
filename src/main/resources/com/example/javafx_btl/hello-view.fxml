@@ -5,23 +5,36 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="395.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_btl.HelloController">
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="330.0" style="-fx-background-image: url('file:./background_main.png'); -fx-background-size: 350;" BorderPane.alignment="CENTER" />
+      <AnchorPane prefHeight="400.0" prefWidth="330.0" style="-fx-background-size: 350;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="425.0" fitWidth="350.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../imgs/background_main.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
    </left>
    <right>
-      <AnchorPane prefHeight="400.0" prefWidth="276.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="400.0" prefWidth="276.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
             <PasswordField fx:id="passwordField" layoutX="85.0" layoutY="202.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: blue; -fx-border-width: 0px 0px 2px 0px;" />
             <TextField fx:id="usernameField" layoutX="85.0" layoutY="145.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: blue; -fx-border-width: 0px 0px 2px 0px;" />
             <Button fx:id="loginButton" layoutX="115.0" layoutY="290.0" mnemonicParsing="false" onAction="#loginButtonClick" style="-fx-background-color: #0598ff;" text="Login" textAlignment="CENTER" textFill="WHITE" />
             <FontAwesomeIconView fill="#8f93ee" glyphName="USER" layoutX="27.0" layoutY="172.0" size="35" wrappingWidth="29.571428298950195" />
             <FontAwesomeIconView fill="#57b6ff" glyphName="KEY" layoutX="24.0" layoutY="228.0" selectionStart="0" size="35" />
-            <FontAwesomeIconView fill="#7385f8" glyphName="USERS" layoutX="114.0" layoutY="87.0" size="45" />
             <Label fx:id="messageField" alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="21.0" layoutY="241.0" prefHeight="31.0" prefWidth="235.0" textAlignment="CENTER" textFill="#f54949" underline="true" wrapText="true" />
+            <ImageView fitHeight="67.0" fitWidth="70.0" layoutX="104.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../imgs/logo.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </right>
