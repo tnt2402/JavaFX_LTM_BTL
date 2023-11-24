@@ -5,11 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="abf977fb-379c-4858-9349-a2f6863de4eb" name="Changes" comment="amen">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLLogin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/HomeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/MainFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/data.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXMLDocument.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_Home.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_Login.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_MainForm.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/loginDesign.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/mainFormDesign.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/imgs/background_main.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/imgs/sticker.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/imgs/sticker.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/HelloController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/background_main.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/imgs/background_main.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/HelloController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/home.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/imgs/background_main.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/imgs/background_main.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,26 +48,37 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2YQqG9oVSp6USc0KExzZkEXygvt" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Administrator/AppData/Local/SceneBuilder/SceneBuilder.exe",
+    "last_opened_file_path": "C:/Users/Administrator/IdeaProjects/JavaFX_BTL/src/main/java/com/example/javafx_btl",
     "project.structure.last.edited": "Global Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\IdeaProjects\JavaFX_BTL\src\main\java\com\example\javafx_btl" />
+      <recent name="C:\Users\Administrator\IdeaProjects\JavaFX_BTL\src\main\resources\com\example\javafx_btl" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\IdeaProjects\JavaFX_BTL\src\main\resources\com\example\javafx_btl" />
       <recent name="C:\Users\Administrator\Documents\GitHub\JavaFX_LTM_BTL\src\main\resources\imgs" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.javafx_btl" />
     </key>
   </component>
   <component name="RunManager">
@@ -105,13 +134,26 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="amen" />
     <option name="LAST_COMMIT_MESSAGE" value="amen" />
   </component>
