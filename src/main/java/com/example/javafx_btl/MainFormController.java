@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 //import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -203,11 +204,45 @@ public class MainFormController implements Initializable {
     
     public void displayUsername() {
         
-        String user = data.username;
+        String user = userData.username;
         user = user.substring(0, 1).toUpperCase() + user.substring(1);
         
         username.setText(user);
         
+    }
+
+    public void contestMode() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML_GamePlay.fxml"));
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.setTitle("Ai là triệu phú - version 0.1");
+
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void trainMode() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML_GamePlay.fxml"));
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.setTitle("Ai là triệu phú - version 0.1");
+
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
     
     @Override

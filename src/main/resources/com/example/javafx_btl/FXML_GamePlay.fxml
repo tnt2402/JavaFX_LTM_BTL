@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_btl.GamePlayController">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane layoutX="200.0" prefHeight="500.0" prefWidth="800.0" />
+            <AnchorPane layoutX="200.0" prefHeight="500.0" prefWidth="800.0">
+               <children>
+                  <TextArea fx:id="questionField" editable="false" layoutX="165.0" layoutY="83.0" prefHeight="77.0" prefWidth="470.0" promptText="Question" stylesheets="@mainFormDesign.css" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </TextArea>
+                  <Label fx:id="ans_a" layoutX="165.0" layoutY="250.0" prefHeight="45.0" prefWidth="162.0" text="Label" />
+                  <Label fx:id="ans_c" layoutX="165.0" layoutY="332.0" prefHeight="45.0" prefWidth="162.0" text="Label" />
+                  <Label fx:id="ans_b" layoutX="472.0" layoutY="250.0" prefHeight="45.0" prefWidth="162.0" text="Label" />
+                  <Label fx:id="ans_d" layoutX="472.0" layoutY="332.0" prefHeight="45.0" prefWidth="162.0" text="Label" />
+               </children></AnchorPane>
          </children>
       </AnchorPane>
    </center>

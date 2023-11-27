@@ -122,7 +122,7 @@ public class FXMLLogin implements Initializable {
                     // IF SUCCESSFULLY LOGIN, THEN PROCEED TO ANOTHER FORM WHICH IS OUR MAIN FORM
                     if (1 == 1) {
                         // TO GET THE USERNAME THAT USER USED
-                        data.username = si_username.getText();
+                        userData.username = si_username.getText();
 
                         alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Information Message");

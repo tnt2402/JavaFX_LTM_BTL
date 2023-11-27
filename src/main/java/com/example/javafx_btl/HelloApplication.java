@@ -12,14 +12,6 @@ public class HelloApplication extends Application {
     public String username_login;
     private static Stage stg;
 
-    public void setUsername_login(String tmp_username) {
-        username_login = tmp_username;
-        System.out.println(username_login);
-    }
-
-    public String getUsername_login() {
-        return username_login;
-    }
     @Override
     public void start(Stage stage) throws IOException {
         // setup server - client connection

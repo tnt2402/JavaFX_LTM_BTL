@@ -8,11 +8,6 @@ public class HomeController {
 
     @FXML
     private Label username;
-    @FXML
-    protected void changeUsername() {
-        HelloApplication m = new HelloApplication();
-        username.setText(m.getUsername_login());
-    }
 
     @FXML
     protected void playModeStart() throws IOException {

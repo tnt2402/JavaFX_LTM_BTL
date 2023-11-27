@@ -1,6 +1,6 @@
 package com.example.javafx_btl;
 
-public class data {
+public class userData {
     
     public static String username;
     public static String path;
