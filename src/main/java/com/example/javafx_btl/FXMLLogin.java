@@ -337,10 +337,46 @@ public class FXMLLogin implements Initializable {
         fp_questionForm.setVisible(true);
         np_newPassForm.setVisible(false);
     }
-    
+
 
 
     public void switchForm(ActionEvent event) {
+
+        TranslateTransition slider = new TranslateTransition();
+
+        if (event.getSource() == side_CreateBtn) {
+            slider.setNode(side_form);
+            slider.setToX(300);
+            slider.setDuration(Duration.seconds(.5));
+
+            slider.setOnFinished((ActionEvent e) -> {
+                side_alreadyHave.setVisible(true);
+                side_CreateBtn.setVisible(false);
+
+                fp_questionForm.setVisible(false);
+                si_loginForm.setVisible(true);
+                np_newPassForm.setVisible(false);
+
+                regLquestionList();
+            });
+
+            slider.play();
+        } else if (event.getSource() == side_alreadyHave) {
+            slider.setNode(side_form);
+            slider.setToX(0);
+            slider.setDuration(Duration.seconds(.5));
+
+            slider.setOnFinished((ActionEvent e) -> {
+                side_alreadyHave.setVisible(false);
+                side_CreateBtn.setVisible(true);
+
+                fp_questionForm.setVisible(false);
+                si_loginForm.setVisible(true);
+                np_newPassForm.setVisible(false);
+            });
+
+            slider.play();
+        }
 
     }
     @Override
