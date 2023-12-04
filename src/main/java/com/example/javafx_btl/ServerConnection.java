@@ -3,12 +3,14 @@ package com.example.javafx_btl;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
-
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class ServerConnection {
+    Logger logger = Logger.getLogger(ServerConnection.class.getName());
     private static String SERVER_ADDRESS;
     private static int SERVER_PORT;
 
@@ -47,7 +49,7 @@ public class ServerConnection {
                 return false; // Login failed
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING,"An error occurred during the connection", e);
             return false; // An error occurred during the connection
         }
     }
@@ -78,8 +80,8 @@ public class ServerConnection {
             List<Object> jsonObjects = objectMapper.readValue(receivedData, List.class);
 
             return jsonObjects;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "An error occurred during data retrieval");
             return null; // An error occurred during data retrieval
         }
     }

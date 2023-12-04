@@ -1,16 +1,22 @@
 package com.example.javafx_btl;
 
+import animatefx.animation.FadeIn;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import org.json.JSONObject;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Iterator;
+import java.util.*;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import javafx.stage.Stage;
+
 public class GamePlayController implements Initializable {
 
     @FXML
@@ -19,44 +25,76 @@ public class GamePlayController implements Initializable {
     private Label ans_a, ans_b, ans_c, ans_d;
 
     private ArrayList<questionAnswerData> ListQnA = new ArrayList<questionAnswerData>();
-    ."";
+
 
     private void GetQuestionFromServer() {
-        // testing purpose
-//        questionAnswerData test = new questionAnswerData();
-//        test.question = "Giải Grand Slam đầu tiên trong năm là giải nào?";
-//        test.ans_a = "Austrlia mở rộng";
-//        test.ans_b = "Wimbledon";
-//        test.ans_c = "Roland Garos";
-//        test.ans_d = "Mỹ mở rộng";
-//        test.true_ans = "A";
         ServerConnection serverConnection = new ServerConnection("localhost", 8080);
 
-        List<Object> JsonObj = serverConnection.getData();
-//        System.out.println(JsonObj);
+        List<Object> jsonObjects = serverConnection.getData();
 
-        for (Object i: JsonObj) {
-            questionAnswerData test = new questionAnswerData();
-            test.question = i.noi_dung;
-            test.ans_a = i.
-            test.ans_b =
-            test.ans_c =
-            test.ans_d =
-            test.true_ans =
+        while (jsonObjects == null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Cannot retrieve data from the server!");
+            Optional<ButtonType> option = alert.showAndWait();
+
+            if (option.get().equals(ButtonType.OK)) {
+                jsonObjects = serverConnection.getData();
+            } else if (option.get().equals(ButtonType.CANCEL)) {
+                break;
+            }
         }
-//        ListQnA.add(test);
-        //
-        serverConnection.closeConnection();
+
+//        System.out.println(JsonObj);
+        if (jsonObjects != null) {
+            JsonParser jsonParser = new JsonParser();
+
+            Gson gson = new Gson();
+            for (Object obj : jsonObjects) {
+                JsonObject jsonObject = jsonParser.parse(gson.toJson(obj)).getAsJsonObject();
+
+                questionAnswerData tmp = new questionAnswerData();
+                tmp.id = jsonObject.get("id").getAsString();
+                tmp.question = jsonObject.get("noi_dung").getAsString();
+                tmp.ans_a = jsonObject.get("phuong_an_a").getAsString();
+                tmp.ans_b = jsonObject.get("phuong_an_b").getAsString();
+                tmp.ans_c = jsonObject.get("phuong_an_c").getAsString();
+                tmp.ans_d = jsonObject.get("phuong_an_d").getAsString();
+                tmp.true_ans = "A";
+                ListQnA.add(tmp);
+
+            }
+        } else {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("FXML_MainForm.fxml"));
+
+                Stage stage = new Stage();
+                Scene scene = new Scene(root);
+
+                stage.setTitle("Ai là triệu phú - version 0.1");
+
+                stage.setScene(scene);
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     private void Play() {
-        for (questionAnswerData i:ListQnA) {
-            questionField.setText(i.question);
-            ans_a.setText(i.ans_a);
-            ans_b.setText(i.ans_b);
-            ans_c.setText(i.ans_c);
-            ans_d.setText(i.ans_d);
+        if (ListQnA != null) {
+            for (questionAnswerData i:ListQnA) {
+                questionField.setText(i.question);
+                ans_a.setText(i.ans_a);
+                ans_b.setText(i.ans_b);
+                ans_c.setText(i.ans_c);
+                ans_d.setText(i.ans_d);
+            }
         }
+
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {

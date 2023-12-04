@@ -25,7 +25,7 @@ public class HelloApplication extends Application {
     }
 
     public void changeScene(String fxml, int height, int width) throws IOException {
-        FXMLLoader pane = new FXMLLoader(HelloApplication.class.getResource("FXML_Home.fxml"));
+        FXMLLoader pane = new FXMLLoader(HelloApplication.class.getResource(fxml));
         Scene scene = new Scene(pane.load(), height, width);
         stg.setScene(scene);
 //        stg.getScene().setRoot(pane);

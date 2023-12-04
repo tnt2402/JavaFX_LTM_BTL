@@ -1,6 +1,7 @@
 package com.example.javafx_btl;
 
 public class questionAnswerData {
+    String id;
     String question;
     String category;
     String ans_a;

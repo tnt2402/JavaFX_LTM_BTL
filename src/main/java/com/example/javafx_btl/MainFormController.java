@@ -8,6 +8,7 @@ package com.example.javafx_btl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import animatefx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -193,6 +194,7 @@ public class MainFormController implements Initializable {
                 
                 stage.setScene(scene);
                 stage.show();
+                new FadeIn(root).play();
                 
             }
             
