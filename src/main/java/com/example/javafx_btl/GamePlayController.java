@@ -61,7 +61,7 @@ public class GamePlayController implements Initializable {
                 tmp.ans_b = jsonObject.get("phuong_an_b").getAsString();
                 tmp.ans_c = jsonObject.get("phuong_an_c").getAsString();
                 tmp.ans_d = jsonObject.get("phuong_an_d").getAsString();
-                tmp.true_ans = "A";
+                tmp.true_ans = jsonObject.get("dap_an").getAsString();;
                 ListQnA.add(tmp);
 
             }

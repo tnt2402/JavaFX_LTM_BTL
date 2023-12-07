@@ -67,6 +67,7 @@ public class ServerConnection {
 
             StringBuilder jsonData = new StringBuilder();
             String line;
+
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
