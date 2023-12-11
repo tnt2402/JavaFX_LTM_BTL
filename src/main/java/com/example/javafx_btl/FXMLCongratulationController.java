@@ -10,7 +10,7 @@ import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 
-public class CongratulationController {
+public class FXMLCongratulationController {
     @FXML
     private Canvas fireworksCanvas;
     @FXML
