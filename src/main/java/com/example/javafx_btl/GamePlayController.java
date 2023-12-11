@@ -133,8 +133,29 @@ public class GamePlayController implements Initializable {
             currentPlay.currentQuestionNumber += 1;
             Play();
         } else {
-            congratulations();
+            failed();
             return;
+        }
+    }
+
+    private void failed() {
+        System.out.println("Well! You failed");
+        //
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML_Failed.fxml"));
+            Parent root = loader.load();
+
+            FXMLFailed controller = loader.getController();
+            Stage stage = new Stage();
+
+            controller.setStage(stage);
+
+            Scene scene = new Scene(root);
+            stage.setTitle("Faillllllllll");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -142,11 +163,17 @@ public class GamePlayController implements Initializable {
         System.out.println("Congratulation!!! You're billionaire");
         //
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML_Congratulation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML_Congratulation.fxml"));
+            Parent root = loader.load();
 
+            FXMLCongratulationController controller = loader.getController();
             Stage stage = new Stage();
+
+            controller.setStage(stage);
+//            controller.setCongratulationGif("./congrats.gif"); // Replace with the actual path
+
             Scene scene = new Scene(root);
-            stage.setTitle("Billionaireeeeeeee");
+            stage.setTitle("Congratulations! \uD83C\uDF89 Billionaireeeeeeee");
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
