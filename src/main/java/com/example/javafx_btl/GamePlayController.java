@@ -1,5 +1,9 @@
 package com.example.javafx_btl;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,16 +12,33 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import static java.lang.Thread.sleep;
 
 public class GamePlayController implements Initializable {
+    // timer clock
+    @FXML
+    private Label timerLabel;
+
+    @FXML
+    private Button startButton;
+
+    private List<Integer> secondsList;
+    private int currentSeconds;
+    private Timeline timeline;
+    private Boolean testMode = false;
+
+    // Play
 
     private playData currentPlay;
 
@@ -87,11 +108,59 @@ public class GamePlayController implements Initializable {
 
     }
 
+    private void clockSetup() {
+        if (!testMode) {
+            secondsList = new ArrayList<>();
+            for (int i=0; i < 5; i++) secondsList.add(15);
+            for (int i=0; i < 5; i++) secondsList.add(30);
+            for (int i=0; i < 5; i++) secondsList.add(45);
+            // Add more seconds to the list if needed
+
+//            currentSeconds = 0;
+            timerLabel.setText("00:00");
+        }
+    }
+
+    @FXML
+    private void startCountdown() {
+        if (timeline != null) {
+            timeline.stop();
+        }
+        currentSeconds = currentPlay.currentQuestionNumber;
+        if (currentSeconds < secondsList.size()) {
+            final int[] seconds = {secondsList.get(currentSeconds)};
+            final int[] minutes = {seconds[0] / 60};
+            final int[] remainingSeconds = {seconds[0] % 60};
+            timerLabel.setText(String.format("%02d:%02d", minutes[0], remainingSeconds[0]));
+
+            timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+                seconds[0]--;
+                if (seconds[0] >= 0) {
+                    minutes[0] = seconds[0] / 60;
+                    remainingSeconds[0] = seconds[0] % 60;
+                    timerLabel.setText(String.format("%02d:%02d", minutes[0], remainingSeconds[0]));
+                } else {
+                    timesup();
+                }
+            }));
+
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        }
+    }
+
+    private void timesup() {
+    }
+
+
     private void Play() {
+        // Set all button to lightblue
+        ans_a.setStyle("-fx-background-color: transparent;");
+        ans_b.setStyle("-fx-background-color: transparent;");
+        ans_c.setStyle("-fx-background-color: transparent;");
+        ans_d.setStyle("-fx-background-color: transparent;");
         if (ListQnA != null) {
             questionAnswerData i = ListQnA.get(currentPlay.currentQuestionNumber - 1);
-            questionField_2.setStyle("-fx-background-color: transparent;");
-
             questionField_2.setText(i.question);
             ans_a.setText(i.ans_a);
             ans_b.setText(i.ans_b);
@@ -99,18 +168,23 @@ public class GamePlayController implements Initializable {
             ans_d.setText(i.ans_d);
 
         }
+        // Set timer
+        startCountdown();
 
     }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         GetQuestionFromServer();
         currentPlay = new playData();
         currentPlay.currentQuestionNumber = 1;
+        clockSetup();
         Play();
     }
 
     @FXML
-    private void handleMoneyRankList() {
+    synchronized private void handleMoneyRankList() {
         Button currentMoney = null;
         Scene currentScene = ans_a.getScene();
         currentMoney = (Button) currentScene.lookup(String.format("#money_%d", currentPlay.currentQuestionNumber));
@@ -119,8 +193,9 @@ public class GamePlayController implements Initializable {
         } else {
             currentMoney.setStyle("-fx-background-color: lightblue;");
         }
-
     }
+
+
     void checkAnswer(String tmp_answer) {
         if (tmp_answer.equals(ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans)) {
             System.out.printf("Question #%d done!\n", currentPlay.currentQuestionNumber);
@@ -129,13 +204,79 @@ public class GamePlayController implements Initializable {
                 congratulations();
                 return;
             }
-            handleMoneyRankList();
+            new Thread(() -> showEffect(true, tmp_answer)).start();
+
             currentPlay.currentQuestionNumber += 1;
             Play();
         } else {
+            new Thread(() -> showEffect(false, tmp_answer)).start();
             failed();
-            return;
         }
+    }
+    synchronized void showEffect(Boolean tmp, String tmp_answer)  {
+        if (tmp) {
+            handleAnswerEffect(tmp_answer, ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans, true);
+            handleMoneyRankList();
+        } else {
+            handleAnswerEffect(tmp_answer, ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans, false);
+        }
+        notify();
+    }
+
+    synchronized private void handleAnswerEffect(String ans, String true_ans, Boolean res) {
+        Button currentAns = null, trueAns = null;
+        Scene currentScene = ans_a.getScene();
+        currentAns = (Button) currentScene.lookup(String.format("#ans_%s", ans.toLowerCase()));
+        trueAns = (Button) currentScene.lookup(String.format("#ans_%s", true_ans.toLowerCase()));
+
+        if (res) {
+            Button finalCurrentAns3 = currentAns;
+            Button finalCurrentAns4 = currentAns;
+            Timeline blinkTimeline = new Timeline(
+                    new KeyFrame(Duration.seconds(0.1), event -> {
+                        Platform.runLater(() -> finalCurrentAns3.setStyle("-fx-background-color: yellow; -fx-text-fill: white;"));
+                    }),
+                    new KeyFrame(Duration.seconds(0.2), event -> {
+                        Platform.runLater(() -> finalCurrentAns4.setStyle("-fx-background-color: red; -fx-text-fill: white;"));
+                    })
+            );
+            blinkTimeline.setCycleCount(5); // Blink for 5 cycles
+            Button finalCurrentAns5 = currentAns;
+            blinkTimeline.setOnFinished(event -> {
+                Platform.runLater(() -> finalCurrentAns5.setStyle("-fx-background-color: transparent; -fx-text-fill: white;"));
+            });
+            blinkTimeline.play();
+        } else {
+            Button finalTrueAns1 = trueAns;
+            Button finalCurrentAns1 = currentAns;
+            Button finalTrueAns2 = trueAns;
+            Button finalCurrentAns2 = currentAns;
+            Timeline blinkTimeline = new Timeline(
+                    new KeyFrame(Duration.seconds(0.1), event -> {
+                        Platform.runLater(() -> {
+                            finalTrueAns1.setStyle("-fx-background-color: lightblue;");
+                            finalCurrentAns1.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                        });
+                    }),
+                    new KeyFrame(Duration.seconds(0.2), event -> {
+                        Platform.runLater(() -> {
+                            finalTrueAns2.setStyle("-fx-background-color: white;"); // Set back to default color
+                            finalCurrentAns2.setStyle("-fx-background-color: yellow; -fx-text-fill: white;");
+                        });
+                    })
+            );
+            blinkTimeline.setCycleCount(10); // Blink for 10 cycles
+            Button finalTrueAns = trueAns;
+            Button finalCurrentAns = currentAns;
+            blinkTimeline.setOnFinished(event -> {
+                Platform.runLater(() -> {
+                    finalTrueAns.setStyle("-fx-background-color: transparent;"); // Set back to default color
+                    finalCurrentAns.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+                });
+            });
+            blinkTimeline.play();
+        }
+
     }
 
     private void failed() {
