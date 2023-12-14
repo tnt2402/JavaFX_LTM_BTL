@@ -14,8 +14,6 @@ import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -26,6 +24,8 @@ import javafx.util.Duration;
 import static java.lang.Thread.sleep;
 
 public class GamePlayController implements Initializable {
+    @FXML
+    private Label userField;
     // timer clock
     @FXML
     private Label timerLabel;
@@ -49,6 +49,9 @@ public class GamePlayController implements Initializable {
     private Button ans_a, ans_b, ans_c, ans_d;
 
     private ArrayList<questionAnswerData> ListQnA = new ArrayList<questionAnswerData>();
+
+    public GamePlayController() {
+    }
 
 
     private void GetQuestionFromServer() {
@@ -121,6 +124,9 @@ public class GamePlayController implements Initializable {
         }
     }
 
+    int[] seconds = {};
+    int[] minutes = {};
+    int[] remainingSeconds = {};
     @FXML
     private void startCountdown() {
         if (timeline != null) {
@@ -128,9 +134,10 @@ public class GamePlayController implements Initializable {
         }
         currentSeconds = currentPlay.currentQuestionNumber;
         if (currentSeconds < secondsList.size()) {
-            final int[] seconds = {secondsList.get(currentSeconds)};
-            final int[] minutes = {seconds[0] / 60};
-            final int[] remainingSeconds = {seconds[0] % 60};
+            seconds = new int[]{secondsList.get(currentSeconds)};
+            int saved_seconds = seconds[0];
+            minutes = new int[]{seconds[0] / 60};
+            remainingSeconds = new int[]{seconds[0] % 60};
             timerLabel.setText(String.format("%02d:%02d", minutes[0], remainingSeconds[0]));
 
             timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -140,61 +147,80 @@ public class GamePlayController implements Initializable {
                     remainingSeconds[0] = seconds[0] % 60;
                     timerLabel.setText(String.format("%02d:%02d", minutes[0], remainingSeconds[0]));
                 } else {
-                    timesup();
+                    timesup(seconds[0]);
                 }
             }));
 
-            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.setCycleCount(saved_seconds + 1);
             timeline.play();
+
         }
     }
 
-    private void timesup() {
+    private void timesup(int second) {
+        currentPlay.end = new Date();
+        failed();
+        return;
     }
 
 
     private void Play() {
         // Set all button to lightblue
-        ans_a.setStyle("-fx-background-color: transparent;");
-        ans_b.setStyle("-fx-background-color: transparent;");
-        ans_c.setStyle("-fx-background-color: transparent;");
-        ans_d.setStyle("-fx-background-color: transparent;");
-        if (ListQnA != null) {
-            questionAnswerData i = ListQnA.get(currentPlay.currentQuestionNumber - 1);
-            questionField_2.setText(i.question);
-            ans_a.setText(i.ans_a);
-            ans_b.setText(i.ans_b);
-            ans_c.setText(i.ans_c);
-            ans_d.setText(i.ans_d);
+            ans_a.setStyle("-fx-background-color: transparent;");
+            ans_b.setStyle("-fx-background-color: transparent;");
+            ans_c.setStyle("-fx-background-color: transparent;");
+            ans_d.setStyle("-fx-background-color: transparent;");
+            if (ListQnA != null) {
+                questionAnswerData i = ListQnA.get(currentPlay.currentQuestionNumber - 1);
+                questionField_2.setText(i.question);
+                ans_a.setText(i.ans_a);
+                ans_b.setText(i.ans_b);
+                ans_c.setText(i.ans_c);
+                ans_d.setText(i.ans_d);
 
-        }
-        // Set timer
-        startCountdown();
+            }
+            // Set timer
+            startCountdown();
 
     }
 
+    @FXML
+    public void displayUsername() {
 
+        String user = userData.username;
+        userField.setText(user);
+
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        displayUsername();
         GetQuestionFromServer();
         currentPlay = new playData();
         currentPlay.currentQuestionNumber = 1;
+        currentPlay.secondsUsage = 0;
+        currentPlay.begin = new Date();
         clockSetup();
         Play();
     }
 
     @FXML
     synchronized private void handleMoneyRankList() {
-        Button currentMoney = null;
+        Button currentMoney = null, currentQuestions = null;
         Scene currentScene = ans_a.getScene();
+        System.out.println(currentPlay.currentQuestionNumber);
         currentMoney = (Button) currentScene.lookup(String.format("#money_%d", currentPlay.currentQuestionNumber));
+        currentQuestions = (Button) currentScene.lookup(String.format("#question_%d", currentPlay.currentQuestionNumber));
+
         if (currentPlay.currentQuestionNumber % 5 == 0) {
             currentMoney.setStyle("-fx-background-color: yellow;-fx-text-fill: black;");
+            currentQuestions.setStyle("-fx-background-color: yellow;-fx-text-fill: black;");
+
         } else {
             currentMoney.setStyle("-fx-background-color: lightblue;");
+            currentQuestions.setStyle("-fx-background-color: lightblue;");
+
         }
     }
-
 
     void checkAnswer(String tmp_answer) {
         if (tmp_answer.equals(ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans)) {
@@ -204,23 +230,22 @@ public class GamePlayController implements Initializable {
                 congratulations();
                 return;
             }
-            new Thread(() -> showEffect(true, tmp_answer)).start();
-
+            timeline.stop();
+            System.out.printf("Question #%d - Time usage: %d seconds\n", currentPlay.currentQuestionNumber, seconds[0]);
+            currentPlay.secondsUsage += seconds[0];
             currentPlay.currentQuestionNumber += 1;
-            Play();
+            showEffect(true, tmp_answer);
         } else {
-            new Thread(() -> showEffect(false, tmp_answer)).start();
-            failed();
+            showEffect(false, tmp_answer);
         }
     }
-    synchronized void showEffect(Boolean tmp, String tmp_answer)  {
+    synchronized void showEffect(Boolean tmp, String tmp_answer) {
         if (tmp) {
-            handleAnswerEffect(tmp_answer, ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans, true);
             handleMoneyRankList();
+            handleAnswerEffect(tmp_answer, ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans, true);
         } else {
             handleAnswerEffect(tmp_answer, ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans, false);
         }
-        notify();
     }
 
     synchronized private void handleAnswerEffect(String ans, String true_ans, Boolean res) {
@@ -244,6 +269,7 @@ public class GamePlayController implements Initializable {
             Button finalCurrentAns5 = currentAns;
             blinkTimeline.setOnFinished(event -> {
                 Platform.runLater(() -> finalCurrentAns5.setStyle("-fx-background-color: transparent; -fx-text-fill: white;"));
+                Play();
             });
             blinkTimeline.play();
         } else {
@@ -265,7 +291,7 @@ public class GamePlayController implements Initializable {
                         });
                     })
             );
-            blinkTimeline.setCycleCount(10); // Blink for 10 cycles
+            blinkTimeline.setCycleCount(5); // Blink for 5 cycles
             Button finalTrueAns = trueAns;
             Button finalCurrentAns = currentAns;
             blinkTimeline.setOnFinished(event -> {
@@ -273,6 +299,7 @@ public class GamePlayController implements Initializable {
                     finalTrueAns.setStyle("-fx-background-color: transparent;"); // Set back to default color
                     finalCurrentAns.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
                 });
+                failed();
             });
             blinkTimeline.play();
         }
@@ -337,4 +364,8 @@ public class GamePlayController implements Initializable {
     public void ans_d_clicked(ActionEvent actionEvent) {
         checkAnswer("D");
     }
+    //
+
 }
+
+

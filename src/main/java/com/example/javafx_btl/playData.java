@@ -6,6 +6,7 @@ public class playData {
     int currentQuestionNumber;
     Date begin;
     Date end;
+    int secondsUsage;
     String room;
 
 }

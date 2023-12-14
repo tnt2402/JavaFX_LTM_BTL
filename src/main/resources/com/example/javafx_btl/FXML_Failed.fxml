@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.stage.Stage?>
+<?import javafx.scene.text.Font?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_btl.FXMLFailed">
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="com.example.javafx_btl.FXMLFailed">
 <children>
     <AnchorPane id="MainAnchorPane" prefHeight="393.0" prefWidth="393.0" stylesheets="@style.css">
         <children>
@@ -19,6 +19,16 @@
                     </image>
                 </ImageView>
             </HBox>
+            <Button fx:id="retryButton" alignment="CENTER" layoutX="138.0" layoutY="190.0" mnemonicParsing="false" onAction="#replay" prefHeight="41.0" prefWidth="134.0" styleClass="text-area" stylesheets="@mainFormDesign.css" text="Retry">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="backButton" alignment="CENTER" layoutX="138.0" layoutY="130.0" mnemonicParsing="false" onAction="#backToHome" prefHeight="41.0" prefWidth="134.0" styleClass="text-area" stylesheets="@mainFormDesign.css" text="Back">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
         </children>
     </AnchorPane>
 </children>

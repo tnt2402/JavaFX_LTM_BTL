@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="abf977fb-379c-4858-9349-a2f6863de4eb" name="Changes" comment="amen">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/50-50.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/5050.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/audiences.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/loading.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/user.gif" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLCongratulationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLCongratulationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLFailed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLFailed.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/GamePlayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/GamePlayController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/MainFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/MainFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/playData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/playData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_Failed.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_Failed.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_GamePlay.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_GamePlay.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -156,7 +166,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702320450349</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="amen">
+      <option name="closed" value="true" />
+      <created>1702445073449</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1702445073449</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

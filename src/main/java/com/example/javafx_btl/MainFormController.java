@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
@@ -169,6 +170,8 @@ public class MainFormController implements Initializable {
     
     private Image image;
 
+    public Stage stg;
+
     public void logout() {
         
         try {
@@ -213,21 +216,21 @@ public class MainFormController implements Initializable {
         
     }
 
-    public void contestMode() {
+
+    public void contestMode(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML_GamePlay.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML_GamePlay.fxml"));
+            Parent root = loader.load();
 
-            Stage stage = new Stage();
             Scene scene = new Scene(root);
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            stage.setTitle("Ai là triệu phú - version 0.1");
-
-            stage.setScene(scene);
-            stage.show();
+            currentStage.setScene(scene);
+            currentStage.setTitle("Ai là triệu phú - version 0.1");
+            currentStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void trainMode() {
@@ -249,7 +252,9 @@ public class MainFormController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         displayUsername();
+
     }
     
 }
