@@ -24,6 +24,8 @@ import javafx.util.Duration;
 import static java.lang.Thread.sleep;
 
 public class GamePlayController implements Initializable {
+    public Stage stg;
+
     @FXML
     private Label userField;
     // timer clock
@@ -193,6 +195,7 @@ public class GamePlayController implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         displayUsername();
         GetQuestionFromServer();
         currentPlay = new playData();
@@ -365,7 +368,10 @@ public class GamePlayController implements Initializable {
         checkAnswer("D");
     }
     //
-
+    public Stage getStage() {
+        Stage stage = (Stage) ans_a.getScene().getWindow();
+        return stage;
+    }
 }
 
 
