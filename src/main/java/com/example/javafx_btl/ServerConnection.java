@@ -2,24 +2,33 @@ package com.example.javafx_btl;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+
+import javafx.fxml.Initializable;
 import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class ServerConnection {
+public class ServerConnection implements Initializable {
     Logger logger = Logger.getLogger(ServerConnection.class.getName());
     private static String SERVER_ADDRESS;
     private static int SERVER_PORT;
 
     public Socket socket;
 
+    public userData currentUser = new userData();
+
     public ServerConnection(String address, int port) {
         SERVER_ADDRESS = address;
         SERVER_PORT = port;
     }
+
+
 
     public void closeConnection() {
         try {
@@ -29,6 +38,19 @@ public class ServerConnection {
         }
     }
 
+
+    public void setCurrentUser(Integer id, String username) {
+        currentUser.id = id;
+        currentUser.username = username;
+    }
+
+    public void updatePlayHistory(playData new_playdata) {
+        currentUser.play_history.add(new_playdata);
+//        System.out.println(currentUser.play_history);
+        for (playData i: currentUser.play_history) {
+            System.out.println(i.listQuestions);
+        }
+    }
 
     public boolean loginUser(String username, String password) {
         try {
@@ -55,6 +77,8 @@ public class ServerConnection {
     }
 
     public List<Object> getData() {
+            currentUser.play_history = new ArrayList<>();
+
         try {
             socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -87,4 +111,7 @@ public class ServerConnection {
         }
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+    }
 }

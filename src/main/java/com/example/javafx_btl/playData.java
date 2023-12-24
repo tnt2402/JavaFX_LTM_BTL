@@ -1,6 +1,7 @@
 package com.example.javafx_btl;
 
 import java.util.Date;
+import java.util.List;
 
 public class playData {
     int currentQuestionNumber;
@@ -9,4 +10,5 @@ public class playData {
     int secondsUsage;
     String room;
 
+    List<String> listQuestions;
 }

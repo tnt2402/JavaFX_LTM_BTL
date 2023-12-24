@@ -1,13 +1,22 @@
 package com.example.javafx_btl;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.layout.StackPane;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,12 +27,15 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import static java.lang.Thread.sleep;
 
 public class GamePlayController implements Initializable {
+    ServerConnection serverConnection = new ServerConnection("localhost", 2402);
+
     public Stage stg;
 
     @FXML
@@ -56,8 +68,8 @@ public class GamePlayController implements Initializable {
     }
 
 
+
     private void GetQuestionFromServer() {
-        ServerConnection serverConnection = new ServerConnection("localhost", 8080);
 
         List<Object> jsonObjects = serverConnection.getData();
 
@@ -92,7 +104,6 @@ public class GamePlayController implements Initializable {
                 tmp.ans_d = jsonObject.get("phuong_an_d").getAsString();
                 tmp.true_ans = jsonObject.get("dap_an").getAsString();
                 ListQnA.add(tmp);
-
             }
         } else {
             try {
@@ -109,8 +120,6 @@ public class GamePlayController implements Initializable {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     private void clockSetup() {
@@ -175,6 +184,12 @@ public class GamePlayController implements Initializable {
             if (ListQnA != null) {
                 questionAnswerData i = ListQnA.get(currentPlay.currentQuestionNumber - 1);
                 questionField_2.setText(i.question);
+
+                ans_a.setDisable(false);
+                ans_b.setDisable(false);
+                ans_c.setDisable(false);
+                ans_d.setDisable(false);
+
                 ans_a.setText(i.ans_a);
                 ans_b.setText(i.ans_b);
                 ans_c.setText(i.ans_c);
@@ -202,8 +217,166 @@ public class GamePlayController implements Initializable {
         currentPlay.currentQuestionNumber = 1;
         currentPlay.secondsUsage = 0;
         currentPlay.begin = new Date();
+        currentPlay.listQuestions = new ArrayList<>();
         clockSetup();
         Play();
+    }
+
+    private void showAlert(String message) {
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.initOwner(ownerStage);
+//        alert.setContentText(message);
+//
+//        // Creating a pause transition to automatically close the alert after 2 seconds
+//        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+//        delay.setOnFinished(event -> alert.close());
+//        delay.play();
+//
+//        alert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Message");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        Optional<ButtonType> option = alert.showAndWait();
+//        if (option.get().equals(ButtonType.OK)) {
+//            return;
+//        }
+    }
+
+    @FXML
+    private void fiftyfifty_clicked() {
+//        VBox root = new VBox();
+//        root.setAlignment(Pos.CENTER);
+//
+//        Stage primaryStage = new Stage();
+//
+//        primaryStage.setTitle("JavaFX Alert Demo");
+//        primaryStage.setScene(new Scene(root, 400, 300));
+//        primaryStage.show();
+        showAlert("Hệ thống đã bỏ 2 đáp án sai!");
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        list.add("D");
+
+        String variable = ListQnA.get(currentPlay.currentQuestionNumber-1).true_ans;
+
+        List<String> filteredList = new ArrayList<>();
+        // Filter the list to exclude the variable
+        for (String element : list) {
+            if (!element.equals(variable)) {
+                filteredList.add(element);
+            }
+        }
+
+        if (filteredList.size() >= 2) {
+            List<String> randomElements = new ArrayList<>();
+            Random random = new Random();
+
+            // Select two random elements
+            while (randomElements.size() < 2) {
+                int randomIndex = random.nextInt(filteredList.size());
+                String randomElement = filteredList.get(randomIndex);
+
+                if (!randomElements.contains(randomElement)) {
+                    randomElements.add(randomElement);
+                }
+            }
+
+            System.out.println(randomElements);
+
+            Scene currentScene = ans_a.getScene();
+            for (String i: randomElements) {
+                System.out.println(currentPlay.currentQuestionNumber);
+                Button iAns = (Button) currentScene.lookup(String.format("#ans_%s", i.toLowerCase()));
+                iAns.setDisable(true);
+            }
+
+
+        }
+    }
+
+    @FXML
+    private void audiencesSuggest() {
+        // Create a CategoryAxis for the x-axis (answers) and a NumberAxis for the y-axis (percentage)
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+
+        // Create a stacked bar chart with x-axis and y-axis
+        StackedBarChart<String, Number> chart = new StackedBarChart<>(xAxis, yAxis);
+        chart.setLegendVisible(false);
+        chart.setAnimated(false);
+
+        // Set the title for the chart
+        chart.setTitle("Answer Percentage");
+
+        // Create a series to hold the data
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        // Generate random percentages for answers a, b, c, d
+        Random random = new Random();
+        double trueAnswerPercentage = random.nextInt(61) + 40; // Generate a random percentage between 40 and 100
+        double remainingPercentage = 100 - trueAnswerPercentage;
+
+        List<Double> listRandomPerc = new ArrayList<>();
+        while (true) {
+            double randomPercentage1 = random.nextInt((int) remainingPercentage + 1);
+            double randomPercentage2 = random.nextInt((int) (remainingPercentage - randomPercentage1) + 1);
+            double randomPercentage3 = remainingPercentage - randomPercentage1 - randomPercentage2;
+            if (trueAnswerPercentage > Math.max(randomPercentage1, Math.max(randomPercentage2, randomPercentage3))) {
+                listRandomPerc.add(randomPercentage1);
+                listRandomPerc.add(randomPercentage2);
+                listRandomPerc.add(randomPercentage3);
+                break;
+            }
+        }
+
+
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        list.add("D");
+        String variable = ListQnA.get(currentPlay.currentQuestionNumber-1).true_ans;
+        List<Double> filteredList = new ArrayList<>();
+        for (Integer i=0; i < list.size(); i++) {
+            if (!list.get(i).equals(variable)) {
+                filteredList.add(listRandomPerc.getLast());
+                listRandomPerc.removeLast();
+            } else {
+                filteredList.add(trueAnswerPercentage);
+            }
+        }
+
+        // Add data to the series
+//        series.getData().add(new XYChart.Data<>("A", trueAnswerPercentage));
+//        series.getData().add(new XYChart.Data<>("B", randomPercentage1));
+//        series.getData().add(new XYChart.Data<>("C", randomPercentage2));
+//        series.getData().add(new XYChart.Data<>("D", randomPercentage3));
+        System.out.println(list);
+        System.out.println(filteredList);
+        for (Integer i=0; i < list.size(); i++) {
+            series.getData().add(new XYChart.Data<>(list.get(i), filteredList.get(i)));
+        }
+
+        // Add the series to the chart
+        ObservableList<XYChart.Series<String, Number>> chartData = FXCollections.observableArrayList();
+        chartData.add(series);
+        chart.setData(chartData);
+
+        // Create a stack pane to hold the chart
+        StackPane root = new StackPane();
+        root.getChildren().add(chart);
+
+        // Create a scene with the root node
+        Scene scene = new Scene(root, 400, 300);
+        Stage primaryStage = new Stage();
+
+        // Set the stage title and scene, then show the stage
+        primaryStage.setTitle("Percentage Column Chart");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     @FXML
@@ -211,10 +384,10 @@ public class GamePlayController implements Initializable {
         Button currentMoney = null, currentQuestions = null;
         Scene currentScene = ans_a.getScene();
         System.out.println(currentPlay.currentQuestionNumber);
-        currentMoney = (Button) currentScene.lookup(String.format("#money_%d", currentPlay.currentQuestionNumber));
-        currentQuestions = (Button) currentScene.lookup(String.format("#question_%d", currentPlay.currentQuestionNumber));
+        currentMoney = (Button) currentScene.lookup(String.format("#money_%d", currentPlay.currentQuestionNumber-1));
+        currentQuestions = (Button) currentScene.lookup(String.format("#question_%d", currentPlay.currentQuestionNumber-1));
 
-        if (currentPlay.currentQuestionNumber % 5 == 0) {
+        if (currentPlay.currentQuestionNumber % 5 == 1 && currentPlay.currentQuestionNumber > 1) {
             currentMoney.setStyle("-fx-background-color: yellow;-fx-text-fill: black;");
             currentQuestions.setStyle("-fx-background-color: yellow;-fx-text-fill: black;");
 
@@ -238,8 +411,13 @@ public class GamePlayController implements Initializable {
             currentPlay.secondsUsage += seconds[0];
             currentPlay.currentQuestionNumber += 1;
             showEffect(true, tmp_answer);
+            // logging
+            currentPlay.listQuestions.add(ListQnA.get(currentPlay.currentQuestionNumber - 2).id);
+
         } else {
             showEffect(false, tmp_answer);
+            // logging the user play data to user play history
+            serverConnection.updatePlayHistory(currentPlay);
         }
     }
     synchronized void showEffect(Boolean tmp, String tmp_answer) {
