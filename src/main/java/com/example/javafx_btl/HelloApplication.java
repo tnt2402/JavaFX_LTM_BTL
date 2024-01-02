@@ -10,6 +10,8 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
     public String username_login;
+
+    public static ServerConnection conn = null;
     private static Stage stg;
 
     @Override

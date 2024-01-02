@@ -10,25 +10,28 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import javafx.fxml.Initializable;
-import org.json.JSONObject;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
+import javafx.scene.control.Alert;
+
+import javax.xml.transform.sax.SAXSource;
 
 public class ServerConnection implements Initializable {
     Logger logger = Logger.getLogger(ServerConnection.class.getName());
     private static String SERVER_ADDRESS;
     private static int SERVER_PORT;
 
-    public Socket socket;
+    private Socket socket;
+    private BufferedWriter out;
+    private BufferedReader in;
 
     public userData currentUser = new userData();
 
-    public ServerConnection(String address, int port) {
-        SERVER_ADDRESS = address;
-        SERVER_PORT = port;
+    public ServerConnection() {
+        Socket socket;
+        BufferedWriter out;
+        BufferedReader in;
     }
-
-
 
     public void closeConnection() {
         try {
@@ -38,7 +41,6 @@ public class ServerConnection implements Initializable {
         }
     }
 
-
     public void setCurrentUser(Integer id, String username) {
         currentUser.id = id;
         currentUser.username = username;
@@ -46,69 +48,100 @@ public class ServerConnection implements Initializable {
 
     public void updatePlayHistory(playData new_playdata) {
         currentUser.play_history.add(new_playdata);
-//        System.out.println(currentUser.play_history);
-        for (playData i: currentUser.play_history) {
+        for (playData i : currentUser.play_history) {
             System.out.println(i.listQuestions);
         }
     }
 
     public boolean loginUser(String username, String password) {
         try {
-            Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out.write("GET /login");
+            out.newLine();
+            out.flush();
+
+            while (!in.ready());
+            in.readLine();
+
             // Send the username and password to the server
-            out.println(username);
-            out.println(password);
+            out.write(username + "||" + password);
+            out.newLine();
+            out.flush();
+            System.out.println(username + "||" + password);
 
             // Wait for the server's response
-            String response = in.readLine();
+            String response = new String();
+            while (!in.ready());
+            response = in.readLine();
+
+            System.out.println(response);
 
             // Check the server's response
             if (response != null && response.equals("LOGIN_SUCCESS")) {
+                // Receive the user ID from the server
+                while (!in.ready());
+                String userID = in.readLine();
+                System.out.printf("User ID: %s\n", userID);
+
+                setCurrentUser(Integer.parseInt(userID), username);
+                
+
                 return true; // Login successful
             } else {
                 return false; // Login failed
             }
         } catch (IOException e) {
-            logger.log(Level.WARNING,"An error occurred during the connection", e);
+            logger.log(Level.WARNING, "An error occurred during the connection", e);
             return false; // An error occurred during the connection
         }
     }
 
     public List<Object> getData() {
-            currentUser.play_history = new ArrayList<>();
+        currentUser.play_history = new ArrayList<>();
 
         try {
-            socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            String requestData = "GET /data";
-            writer.write(requestData);
-            writer.newLine();
-            writer.flush();
+            out.write("GET /data");
+            out.newLine();
+            out.flush();
 
             StringBuilder jsonData = new StringBuilder();
             String line;
 
-            while ((line = reader.readLine()) != null) {
+            while ((line = in.readLine()) != null) {
                 jsonData.append(line);
             }
 
             // Process the received JSON data
             String receivedData = jsonData.toString();
-             System.out.println("Received JSON data:\n" + receivedData);
+            System.out.println("Received JSON data:\n" + receivedData);
 
-//            JSONObject json = new JSONObject(receivedData);
             ObjectMapper objectMapper = new ObjectMapper();
             List<Object> jsonObjects = objectMapper.readValue(receivedData, List.class);
 
             return jsonObjects;
         } catch (Exception e) {
-            logger.log(Level.WARNING, "An error occurred during data retrieval");
+            logger.log(Level.WARNING, "An error occurred during data retrieval", e);
             return null; // An error occurred during data retrieval
         }
+    }
+
+    (ServerConnection ) public void Connect(String address, int port) {
+        if (socket == null) {
+            try {
+                socket = new Socket(address, port);
+                out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                System.out.println("Connected to server successfully!");
+            } catch (IOException e) {
+//                throw new RuntimeException(e);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Cannot connect to the server!");
+                alert.showAndWait();
+            }
+
+        }
+
     }
 
     @Override

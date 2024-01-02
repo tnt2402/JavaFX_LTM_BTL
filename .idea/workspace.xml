@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="abf977fb-379c-4858-9349-a2f6863de4eb" name="Changes" comment="amen">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/GamePlayTrainModeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_GamePlay_trainMode.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLLogin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/GamePlayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/GamePlayController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_GamePlay.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_GamePlay.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/HelloApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/ServerConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/ServerConnection.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,25 +39,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "last_directory_selection": "C:/Users/Administrator/Documents/GitHub/JavaFX_LTM_BTL/src/main/java/com/example/javafx_btl",
-    "last_opened_file_path": "C:/Users/Administrator/Documents/GitHub/JavaFX_LTM_BTL/src/main/resources/com/example/javafx_btl",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.27931035",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/Administrator/Documents/GitHub/JavaFX_LTM_BTL/src/main/java/com/example/javafx_btl&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/JavaFX_LTM_BTL/src/main/resources/com/example/javafx_btl&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.27931035&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\Documents\GitHub\JavaFX_LTM_BTL\src\main\resources\com\example\javafx_btl" />
@@ -185,7 +186,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703047738971</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="amen">
+      <option name="closed" value="true" />
+      <created>1703440934802</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1703440934802</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

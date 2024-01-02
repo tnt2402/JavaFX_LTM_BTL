@@ -106,6 +106,8 @@ public class FXMLLogin implements Initializable {
     private ResultSet result;
     
     private Alert alert;
+
+    public static ServerConnection conn = null;
     
     public void loginBtn() {
         
@@ -113,14 +115,17 @@ public class FXMLLogin implements Initializable {
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
-            alert.setContentText("Incorrect Username/Password");
+            alert.setContentText("Empty Username/Password");
             alert.showAndWait();
         } else {
-
+            conn = new ServerConnection();
+            conn.Connect("localhost", 2402);
 
                 try {
+                    String tmp_username = si_username.getText();
+                    String tmp_password = si_password.getText();
                     // IF SUCCESSFULLY LOGIN, THEN PROCEED TO ANOTHER FORM WHICH IS OUR MAIN FORM
-                    if (1 == 1) {
+                    if (conn.loginUser(tmp_username, tmp_password)) {
                         // TO GET THE USERNAME THAT USER USED
                         userData.username = si_username.getText();
 
@@ -151,6 +156,7 @@ public class FXMLLogin implements Initializable {
                         alert.setHeaderText(null);
                         alert.setContentText("Incorrect Username/Password");
                         alert.showAndWait();
+                        conn.closeConnection();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -382,6 +388,9 @@ public class FXMLLogin implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+
+
+
     }
     
 }

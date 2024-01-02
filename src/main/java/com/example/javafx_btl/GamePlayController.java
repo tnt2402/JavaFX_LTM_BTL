@@ -34,7 +34,7 @@ import javafx.util.Duration;
 import static java.lang.Thread.sleep;
 
 public class GamePlayController implements Initializable {
-    ServerConnection serverConnection = new ServerConnection("localhost", 2402);
+    ServerConnection serverConnection = FXMLLogin.conn;
 
     public Stage stg;
 
@@ -71,6 +71,7 @@ public class GamePlayController implements Initializable {
 
     private void GetQuestionFromServer() {
 
+        serverConnection.loginUser("admin", "toor_2");
         List<Object> jsonObjects = serverConnection.getData();
 
         while (jsonObjects == null) {
