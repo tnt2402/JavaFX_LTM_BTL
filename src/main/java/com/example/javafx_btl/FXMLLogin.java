@@ -107,8 +107,10 @@ public class FXMLLogin implements Initializable {
     
     private Alert alert;
 
-    public static ServerConnection conn = null;
-    
+    public static ServerConnection conn;
+//    ServerConnection conn = new ServerConnection().connect("localhost", 2402);
+
+
     public void loginBtn() {
         
         if (si_username.getText().isEmpty() || si_password.getText().isEmpty()) {
@@ -118,13 +120,15 @@ public class FXMLLogin implements Initializable {
             alert.setContentText("Empty Username/Password");
             alert.showAndWait();
         } else {
-            conn = new ServerConnection();
-            conn.Connect("localhost", 2402);
-
+//            conn = new ServerConnection();
+//            conn.Connect("localhost", 2402);
                 try {
                     String tmp_username = si_username.getText();
                     String tmp_password = si_password.getText();
                     // IF SUCCESSFULLY LOGIN, THEN PROCEED TO ANOTHER FORM WHICH IS OUR MAIN FORM
+                    boolean a = conn.loginUser("admin", "toor_2");
+                    boolean b = conn.loginUser("admin", "toor_3");
+
                     if (conn.loginUser(tmp_username, tmp_password)) {
                         // TO GET THE USERNAME THAT USER USED
                         userData.username = si_username.getText();
@@ -388,9 +392,7 @@ public class FXMLLogin implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
-
-
+        conn = new ServerConnection().connect("localhost", 2402);
     }
     
 }

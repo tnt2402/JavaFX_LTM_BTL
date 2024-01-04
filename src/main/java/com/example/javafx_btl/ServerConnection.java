@@ -21,16 +21,16 @@ public class ServerConnection implements Initializable {
     private static String SERVER_ADDRESS;
     private static int SERVER_PORT;
 
-    private Socket socket;
-    private BufferedWriter out;
-    private BufferedReader in;
+    Socket socket;
+    BufferedWriter out;
+    BufferedReader in;
 
     public userData currentUser = new userData();
 
     public ServerConnection() {
-        Socket socket;
-        BufferedWriter out;
-        BufferedReader in;
+        Socket socket = new Socket();
+        BufferedWriter out = null;
+        BufferedReader in = null;
     }
 
     public void closeConnection() {
@@ -124,24 +124,25 @@ public class ServerConnection implements Initializable {
         }
     }
 
-    (ServerConnection ) public void Connect(String address, int port) {
-        if (socket == null) {
+    public ServerConnection connect(String address, int port) {
+        ServerConnection serverConnection = new ServerConnection();
+
+        if (serverConnection.socket == null) {
             try {
-                socket = new Socket(address, port);
-                out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                serverConnection.socket = new Socket(address, port);
+                serverConnection.out = new BufferedWriter(new OutputStreamWriter(serverConnection.socket.getOutputStream()));
+                serverConnection.in = new BufferedReader(new InputStreamReader(serverConnection.socket.getInputStream()));
                 System.out.println("Connected to server successfully!");
             } catch (IOException e) {
-//                throw new RuntimeException(e);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
                 alert.setContentText("Cannot connect to the server!");
                 alert.showAndWait();
             }
-
         }
 
+        return serverConnection;
     }
 
     @Override

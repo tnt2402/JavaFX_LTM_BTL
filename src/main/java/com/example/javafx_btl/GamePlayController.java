@@ -31,10 +31,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import com.example.javafx_btl.FXMLLogin;
 import static java.lang.Thread.sleep;
 
 public class GamePlayController implements Initializable {
-    ServerConnection serverConnection = FXMLLogin.conn;
+    private ServerConnection serverConnection;
 
     public Stage stg;
 
@@ -70,7 +71,7 @@ public class GamePlayController implements Initializable {
 
 
     private void GetQuestionFromServer() {
-
+        System.out.println("admin-toor_2");
         serverConnection.loginUser("admin", "toor_2");
         List<Object> jsonObjects = serverConnection.getData();
 
@@ -211,7 +212,7 @@ public class GamePlayController implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        serverConnection = FXMLLogin.conn;
         displayUsername();
         GetQuestionFromServer();
         currentPlay = new playData();
