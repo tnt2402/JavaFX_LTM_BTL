@@ -21,6 +21,8 @@ public class ServerConnection implements Initializable {
     private static String SERVER_ADDRESS;
     private static int SERVER_PORT;
 
+    public static ServerConnection conn;
+
     Socket socket;
     BufferedWriter out;
     BufferedReader in;
@@ -54,9 +56,9 @@ public class ServerConnection implements Initializable {
     }
 
     public void write(String message) throws IOException {
-        out.write(message);
-        out.newLine();
-        out.flush();
+        conn.out.write(message);
+        conn.out.newLine();
+        conn.out.flush();
     }
 
     public boolean loginUser(String username, String password) {
@@ -97,20 +99,19 @@ public class ServerConnection implements Initializable {
         currentUser.play_history = new ArrayList<>();
 
         try {
-            out.write("GET /data");
-            out.newLine();
-            out.flush();
-
+            write("GET /data");
             StringBuilder jsonData = new StringBuilder();
-            String line;
+            String receivedData;
 
-            while ((line = in.readLine()) != null) {
-                jsonData.append(line);
-            }
+//            while ((line = in.readLine()) != null) {
+//                jsonData.append(line);
+//            }
+            receivedData = conn.in.readLine();
+            System.out.println(receivedData);
 
             // Process the received JSON data
-            String receivedData = jsonData.toString();
-            System.out.println("Received JSON data:\n" + receivedData);
+//            String receivedData = jsonData.toString();
+//            System.out.println("Received JSON data:\n" + receivedData);
 
             ObjectMapper objectMapper = new ObjectMapper();
             List<Object> jsonObjects = objectMapper.readValue(receivedData, List.class);
@@ -140,6 +141,8 @@ public class ServerConnection implements Initializable {
             }
         }
 
+        //
+        conn = serverConnection;
         return serverConnection;
     }
 

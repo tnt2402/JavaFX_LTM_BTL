@@ -71,8 +71,7 @@ public class GamePlayController implements Initializable {
 
 
     private void GetQuestionFromServer() {
-        System.out.println("admin-toor_2");
-        serverConnection.loginUser("admin", "toor_2");
+//        boolean a = FXMLLogin.conn.loginUser("test", "test");
         List<Object> jsonObjects = serverConnection.getData();
 
         while (jsonObjects == null) {
