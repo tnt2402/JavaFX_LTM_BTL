@@ -53,32 +53,33 @@ public class ServerConnection implements Initializable {
         }
     }
 
+    public void write(String message) throws IOException {
+        out.write(message);
+        out.newLine();
+        out.flush();
+    }
+
     public boolean loginUser(String username, String password) {
         try {
-            out.write("GET /login");
-            out.newLine();
-            out.flush();
+            write("GET /login");
 
             while (!in.ready());
             in.readLine();
 
             // Send the username and password to the server
-            out.write(username + "||" + password);
-            out.newLine();
-            out.flush();
+            write(username);
+            write(password);
+
             System.out.println(username + "||" + password);
 
             // Wait for the server's response
             String response = new String();
-            while (!in.ready());
             response = in.readLine();
-
             System.out.println(response);
 
             // Check the server's response
             if (response != null && response.equals("LOGIN_SUCCESS")) {
                 // Receive the user ID from the server
-                while (!in.ready());
                 String userID = in.readLine();
                 System.out.printf("User ID: %s\n", userID);
 

@@ -126,9 +126,6 @@ public class FXMLLogin implements Initializable {
                     String tmp_username = si_username.getText();
                     String tmp_password = si_password.getText();
                     // IF SUCCESSFULLY LOGIN, THEN PROCEED TO ANOTHER FORM WHICH IS OUR MAIN FORM
-                    boolean a = conn.loginUser("admin", "toor_2");
-                    boolean b = conn.loginUser("admin", "toor_3");
-
                     if (conn.loginUser(tmp_username, tmp_password)) {
                         // TO GET THE USERNAME THAT USER USED
                         userData.username = si_username.getText();
@@ -160,7 +157,7 @@ public class FXMLLogin implements Initializable {
                         alert.setHeaderText(null);
                         alert.setContentText("Incorrect Username/Password");
                         alert.showAndWait();
-                        conn.closeConnection();
+//                        conn.closeConnection();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
