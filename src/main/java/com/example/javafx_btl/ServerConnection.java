@@ -62,8 +62,6 @@ public class ServerConnection implements Initializable {
     public boolean loginUser(String username, String password) {
         try {
             write("GET /login");
-
-            while (!in.ready());
             in.readLine();
 
             // Send the username and password to the server
@@ -84,7 +82,6 @@ public class ServerConnection implements Initializable {
                 System.out.printf("User ID: %s\n", userID);
 
                 setCurrentUser(Integer.parseInt(userID), username);
-                
 
                 return true; // Login successful
             } else {
