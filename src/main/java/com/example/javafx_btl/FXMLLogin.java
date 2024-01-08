@@ -179,19 +179,13 @@ public class FXMLLogin implements Initializable {
             alert.showAndWait();
         } else {
 
-            
+            Boolean res = conn.regUser(su_username.getText(), su_password.getText(), su_question.getSelectionModel().getSelectedItem().toString(), su_answer.getText());
 
-                if (1==1) {
+                if (!res) {
                     alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error Message");
                     alert.setHeaderText(null);
                     alert.setContentText(su_username.getText() + " is already taken");
-                    alert.showAndWait();
-                } else if (su_password.getText().length() < 8) {
-                    alert = new Alert(AlertType.ERROR);
-                    alert.setTitle("Error Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Invalid Password, atleast 8 characters are needed");
                     alert.showAndWait();
                 } else {
 

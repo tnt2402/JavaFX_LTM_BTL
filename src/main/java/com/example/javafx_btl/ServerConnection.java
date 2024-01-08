@@ -13,6 +13,9 @@ import javafx.fxml.Initializable;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 import javax.xml.transform.sax.SAXSource;
 
@@ -148,5 +151,29 @@ public class ServerConnection implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    }
+
+    public Boolean regUser(String suUsername, String suPassword, String suQuestion, String suAnswer) {
+        try {
+            write("GET /register");
+            in.readLine();
+
+            // Send the username and password to the server
+            write(suUsername);
+            write(suPassword);
+            String res = in.readLine();
+            switch (Integer.parseInt(res)) {
+                case 1:
+                    // register successfully
+                    write(suQuestion);
+                    write(suAnswer);
+                    return true;
+                default:
+                    return false;
+            }
+        } catch (IOException e) {
+            return false;
+        }
+
     }
 }

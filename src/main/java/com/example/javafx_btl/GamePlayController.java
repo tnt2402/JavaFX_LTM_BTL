@@ -372,9 +372,11 @@ public class GamePlayController implements Initializable {
         player.Play(config.soundBasePath + "sound_trogiup_50_50.mp3");
 
         while (player.getStatus()) {
-            int a = 1;
-            int b = a+1;
-            a = b;
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 //        showAlert("Hệ thống đã bỏ 2 đáp án sai!");
         List<String> list = new ArrayList<>();
@@ -429,9 +431,11 @@ public class GamePlayController implements Initializable {
         player.Play(config.soundBasePath + "sound_tro_giup_hoi_y_kien.mp3");
 
         while (player.getStatus()) {
-            int a = 1;
-            int b = a+1;
-            a = b;
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // Create a CategoryAxis for the x-axis (answers) and a NumberAxis for the y-axis (percentage)
