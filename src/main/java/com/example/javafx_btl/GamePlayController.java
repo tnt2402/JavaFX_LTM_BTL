@@ -728,6 +728,9 @@ public class GamePlayController implements Initializable {
         Stage stage = (Stage) ans_a.getScene().getWindow();
         return stage;
     }
+
+    public void handleExitButton(ActionEvent actionEvent) {
+    }
 }
 
 
