@@ -31,7 +31,7 @@
                   </Label>
 
                </children></AnchorPane>
-            <Button layoutX="44.0" layoutY="613.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Dừng thi" textFill="#ef2424">
+            <Button fx:id="exitButton" layoutX="44.0" layoutY="613.0" mnemonicParsing="false" onAction="#handleExitButton" prefHeight="42.0" prefWidth="94.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Dừng thi" textFill="#ef2424">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>

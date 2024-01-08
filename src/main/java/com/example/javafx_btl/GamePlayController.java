@@ -1,22 +1,20 @@
 package com.example.javafx_btl;
 
+import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.StackPane;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,15 +25,17 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-import com.example.javafx_btl.FXMLLogin;
 import static java.lang.Thread.sleep;
 
 public class GamePlayController implements Initializable {
     private ServerConnection serverConnection;
+    AudioPlayer player = new AudioPlayer();
+    Random random = new Random();
+
 
     public Stage stg;
 
@@ -61,7 +61,7 @@ public class GamePlayController implements Initializable {
     private TextArea questionField_2;
 
     @FXML
-    private Button ans_a, ans_b, ans_c, ans_d;
+    private Button ans_a, ans_b, ans_c, ans_d, exitButton;
 
     private ArrayList<questionAnswerData> ListQnA = new ArrayList<questionAnswerData>();
 
@@ -104,6 +104,7 @@ public class GamePlayController implements Initializable {
                 tmp.ans_c = jsonObject.get("phuong_an_c").getAsString();
                 tmp.ans_d = jsonObject.get("phuong_an_d").getAsString();
                 tmp.true_ans = jsonObject.get("dap_an").getAsString();
+                tmp.path = jsonObject.get("path").getAsString();
                 ListQnA.add(tmp);
             }
         } else {
@@ -164,8 +165,48 @@ public class GamePlayController implements Initializable {
             }));
 
             timeline.setCycleCount(saved_seconds + 1);
-            timeline.play();
+//            timeline.play();
 
+        }
+    }
+
+    private void stopCountdown() {
+        if (timeline != null) {
+            timeline.stop();
+            // Save the remaining seconds
+            remainingSeconds = new int[]{seconds[0]};
+        }
+    }
+
+    @FXML
+    private void continueCountdown() {
+        if (timeline != null) {
+            // Check if the countdown was stopped and there are remaining seconds
+            if (remainingSeconds[0] > 0) {
+                // Resume the countdown
+                seconds = new int[]{remainingSeconds[0]};
+                int saved_seconds = seconds[0];
+                minutes = new int[]{seconds[0] / 60};
+                remainingSeconds = new int[]{seconds[0] % 60};
+                timerLabel.setText(String.format("%02d:%02d", minutes[0], remainingSeconds[0]));
+
+                timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+                    seconds[0]--;
+                    if (seconds[0] >= 0) {
+                        minutes[0] = seconds[0] / 60;
+                        remainingSeconds[0] = seconds[0] % 60;
+                        timerLabel.setText(String.format("%02d:%02d", minutes[0], remainingSeconds[0]));
+                    } else {
+                        timesup(seconds[0]);
+                    }
+                }));
+
+                timeline.setCycleCount(saved_seconds + 1);
+                timeline.play();
+
+                // Reset the remaining seconds
+                remainingSeconds[0] = 0;
+            }
         }
     }
 
@@ -177,6 +218,9 @@ public class GamePlayController implements Initializable {
 
 
     private void Play() {
+        // play begin sound
+
+
         // Set all button to lightblue
             ans_a.setStyle("-fx-background-color: transparent;");
             ans_b.setStyle("-fx-background-color: transparent;");
@@ -184,44 +228,113 @@ public class GamePlayController implements Initializable {
             ans_d.setStyle("-fx-background-color: transparent;");
             if (ListQnA != null) {
                 questionAnswerData i = ListQnA.get(currentPlay.currentQuestionNumber - 1);
-                questionField_2.setText(i.question);
-
                 ans_a.setDisable(false);
                 ans_b.setDisable(false);
                 ans_c.setDisable(false);
                 ans_d.setDisable(false);
 
+
+                switch (currentPlay.currentQuestionNumber) {
+                    case 1:
+                        player.Play(config.soundBasePath + "huong_dan.mp3");
+                        player.Play(config.soundBasePath + "san_sang_choi_chua.mp3");
+                        player.Play(config.soundBasePath + "nguoi_choi_ss.mp3");
+                        break;
+                    case 6:
+                        player.Play(config.soundBasePath + "vuot5.mp3");
+                        break;
+                    case 11:
+                        player.Play(config.soundBasePath + "vuot10.mp3");
+                        break;
+                    case 16:
+                        player.Play(config.soundBasePath + "vuotcuoi.mp3");
+                        break;
+                }
+
+
+                while (player.getStatus()) {
+                    try {
+                        Thread.sleep(100); // Adjust the sleep duration if needed
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                player.Play(config.soundBasePath + "start_cau" + currentPlay.currentQuestionNumber + ".mp3");
+                while (player.getStatus()) {
+                    try {
+                        Thread.sleep(100); // Adjust the sleep duration if needed
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                questionField_2.setText(i.question);
                 ans_a.setText(i.ans_a);
                 ans_b.setText(i.ans_b);
                 ans_c.setText(i.ans_c);
                 ans_d.setText(i.ans_d);
+                player.Play(config.soundBasePath + i.path + ".mp3");
+
+                // Set timer
+//                while (player.getStatus()) {
+//                    try {
+//                        Thread.sleep(100); // Adjust the sleep duration if needed
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+
+                startCountdown();
+                timeline.play();
 
             }
-            // Set timer
-            startCountdown();
+
 
     }
 
     @FXML
     public void displayUsername() {
-
         String user = userData.username;
         userField.setText(user);
-
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         serverConnection = FXMLLogin.conn;
         displayUsername();
         GetQuestionFromServer();
+
         currentPlay = new playData();
         currentPlay.currentQuestionNumber = 1;
         currentPlay.secondsUsage = 0;
         currentPlay.begin = new Date();
         currentPlay.listQuestions = new ArrayList<>();
-        clockSetup();
-        Play();
+        PlayButton();
+
     }
+
+    public void PlayButton() {
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("Play Button Screen");
+
+        // Create a Play button
+        Button playButton = new Button("Play");
+        playButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Close the screen when the button is clicked
+                clockSetup();
+                startCountdown();
+                primaryStage.close();
+                Play();
+            }
+        });
+
+        // Set up the layout
+        StackPane root = new StackPane();
+        root.getChildren().add(playButton);
+        primaryStage.setScene(new Scene(root, 200, 200));
+        primaryStage.show();
+    }
+
 
     private void showAlert(String message) {
 //        Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -254,7 +367,16 @@ public class GamePlayController implements Initializable {
 //        primaryStage.setTitle("JavaFX Alert Demo");
 //        primaryStage.setScene(new Scene(root, 400, 300));
 //        primaryStage.show();
-        showAlert("Hệ thống đã bỏ 2 đáp án sai!");
+        stopCountdown();
+        player.Play(config.soundBasePath + "sound_chon_50_50.mp3");
+        player.Play(config.soundBasePath + "sound_trogiup_50_50.mp3");
+
+        while (player.getStatus()) {
+            int a = 1;
+            int b = a+1;
+            a = b;
+        }
+//        showAlert("Hệ thống đã bỏ 2 đáp án sai!");
         List<String> list = new ArrayList<>();
         list.add("A");
         list.add("B");
@@ -296,10 +418,22 @@ public class GamePlayController implements Initializable {
 
 
         }
+        continueCountdown();
     }
+
 
     @FXML
     private void audiencesSuggest() {
+        stopCountdown();
+        player.Play(config.soundBasePath + "sound_chon_y_kien.mp3");
+        player.Play(config.soundBasePath + "sound_tro_giup_hoi_y_kien.mp3");
+
+        while (player.getStatus()) {
+            int a = 1;
+            int b = a+1;
+            a = b;
+        }
+
         // Create a CategoryAxis for the x-axis (answers) and a NumberAxis for the y-axis (percentage)
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
@@ -350,13 +484,6 @@ public class GamePlayController implements Initializable {
             }
         }
 
-        // Add data to the series
-//        series.getData().add(new XYChart.Data<>("A", trueAnswerPercentage));
-//        series.getData().add(new XYChart.Data<>("B", randomPercentage1));
-//        series.getData().add(new XYChart.Data<>("C", randomPercentage2));
-//        series.getData().add(new XYChart.Data<>("D", randomPercentage3));
-        System.out.println(list);
-        System.out.println(filteredList);
         for (Integer i=0; i < list.size(); i++) {
             series.getData().add(new XYChart.Data<>(list.get(i), filteredList.get(i)));
         }
@@ -365,6 +492,7 @@ public class GamePlayController implements Initializable {
         ObservableList<XYChart.Series<String, Number>> chartData = FXCollections.observableArrayList();
         chartData.add(series);
         chart.setData(chartData);
+
 
         // Create a stack pane to hold the chart
         StackPane root = new StackPane();
@@ -375,9 +503,13 @@ public class GamePlayController implements Initializable {
         Stage primaryStage = new Stage();
 
         // Set the stage title and scene, then show the stage
-        primaryStage.setTitle("Percentage Column Chart");
+        primaryStage.setTitle("Tỉ lệ ý kiến khán giả");
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest((WindowEvent event) -> {
+            timeline.play();
+        });
         primaryStage.show();
+
     }
 
     @FXML
@@ -399,8 +531,36 @@ public class GamePlayController implements Initializable {
         }
     }
 
+    @FXML
     void checkAnswer(String tmp_answer) {
+        stopCountdown();
+
+        Button currentAns = null;
+        Scene currentScene = ans_a.getScene();
+        currentAns = (Button) currentScene.lookup(String.format("#ans_%s", tmp_answer.toLowerCase()));
+        currentAns.setStyle("-fx-background-color: lightblue;");
+
+        while (player.getStatus()) {
+            int a = 1;
+            int b = a+1;
+            a = b;
+        }
+
+
+        player.Play(config.soundBasePath + "ans_" + (tmp_answer.charAt(0) - 'A' + 1) + "_" + (random.nextInt(3) + 1) + ".mp3");
+
+//        while (player.getStatus()) {
+//            System.out.println("");
+//        }
+        while (player.getStatus()) {
+            int a = 1;
+            int b = a+1;
+            a = b;
+        }
+
         if (tmp_answer.equals(ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans)) {
+            player.Play(config.soundBasePath + "true_" + (tmp_answer.charAt(0) - 'A' + 1) + "_" + (random.nextInt(2) + 1) + ".mp3");
+
             System.out.printf("Question #%d done!\n", currentPlay.currentQuestionNumber);
             if (currentPlay.currentQuestionNumber == 15) {
                 handleMoneyRankList();
@@ -408,14 +568,16 @@ public class GamePlayController implements Initializable {
                 return;
             }
             timeline.stop();
-            System.out.printf("Question #%d - Time usage: %d seconds\n", currentPlay.currentQuestionNumber, seconds[0]);
-            currentPlay.secondsUsage += seconds[0];
+            System.out.printf("Question #%d - Time usage: %d seconds\n", currentPlay.currentQuestionNumber, remainingSeconds[0]);
+            currentPlay.secondsUsage += remainingSeconds[0];
             currentPlay.currentQuestionNumber += 1;
             showEffect(true, tmp_answer);
             // logging
             currentPlay.listQuestions.add(ListQnA.get(currentPlay.currentQuestionNumber - 2).id);
 
         } else {
+            player.Play(config.soundBasePath + "lose_" + (ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans.charAt(0) - 'A' + 1) + ".mp3");
+
             showEffect(false, tmp_answer);
             // logging the user play data to user play history
             serverConnection.updatePlayHistory(currentPlay);
@@ -489,28 +651,43 @@ public class GamePlayController implements Initializable {
     }
 
     private void failed() {
-        System.out.println("Well! You failed");
-        //
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML_Failed.fxml"));
-            Parent root = loader.load();
+//        System.out.println("Well! You failed");
+//        //
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML_Failed.fxml"));
+//            Parent root = loader.load();
+//
+//            FXMLFailed controller = loader.getController();
+//            Stage stage = new Stage();
+//
+//            controller.setStage(stage);
+//
+//            Scene scene = new Scene(root);
+//            stage.setTitle("Faillllllllll");
+//            stage.setScene(scene);
+//            stage.show();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-            FXMLFailed controller = loader.getController();
-            Stage stage = new Stage();
+//        player.Play(config.soundBasePath + "bgmusic_answer_f.mp3");
+        exitButton.setText("Trở về");
+        player.Play(config.soundBasePath + "sound_chiatay.mp3");
+        player.Play(config.soundBasePath + "sound_ket_thuc.mp3");
+        questionField_2.setDisable(true);
+        ans_a.setDisable(true);
+        ans_b.setDisable(true);
+        ans_c.setDisable(true);
+        ans_d.setDisable(true);
 
-            controller.setStage(stage);
-
-            Scene scene = new Scene(root);
-            stage.setTitle("Faillllllllll");
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void congratulations() {
+        player.Play(config.soundBasePath + "vuotcuoi.mp3");
+        player.Play(config.soundBasePath + "bgmusic_1.mp3");
         System.out.println("Congratulation!!! You're billionaire");
+        exitButton.setText("Trở về");
+        handleMoneyRankList();
         //
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML_Congratulation.fxml"));

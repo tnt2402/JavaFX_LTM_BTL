@@ -107,7 +107,6 @@ public class ServerConnection implements Initializable {
 //                jsonData.append(line);
 //            }
             receivedData = conn.in.readLine();
-            System.out.println(receivedData);
 
             // Process the received JSON data
 //            String receivedData = jsonData.toString();
@@ -115,6 +114,7 @@ public class ServerConnection implements Initializable {
 
             ObjectMapper objectMapper = new ObjectMapper();
             List<Object> jsonObjects = objectMapper.readValue(receivedData, List.class);
+            System.out.println(jsonObjects);
 
             return jsonObjects;
         } catch (Exception e) {
