@@ -807,6 +807,10 @@ public class GamePlayController implements Initializable {
 
         if (exitButton.getText().equals("Dừng thi")) {
             player.Play(config.soundBasePath + "tro_giup_dung_choi.mp3");
+            while (player.getStatus()) {
+                int a=0;
+                int b = a;
+            }
             Alert confirmExit = new Alert(Alert.AlertType.CONFIRMATION);
             confirmExit.setTitle("Confirmation Dialog");
             confirmExit.setHeaderText("Dừng chơi");
@@ -814,6 +818,7 @@ public class GamePlayController implements Initializable {
 
             Optional<ButtonType> result = confirmExit.showAndWait();
             if (result.orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                serverConnection.updatePlayHistory(currentPlay);
                 back2MainForm(actionEvent);
             }
         } else {

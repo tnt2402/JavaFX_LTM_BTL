@@ -62,7 +62,7 @@ public class ServerConnection implements Initializable {
         try {
             write("GET /log");
             write(String.valueOf(currentUser.id));
-            write(String.valueOf(new_playdata.currentQuestionNumber));
+            write(String.valueOf(new_playdata.listQuestions.size()));
             write(String.valueOf(new_playdata.begin));
             write(String.valueOf(new_playdata.end));
             write(String.valueOf(new_playdata.secondsUsage));
