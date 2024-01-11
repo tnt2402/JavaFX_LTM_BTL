@@ -273,6 +273,7 @@ public class MainFormController implements Initializable {
                 String response;
                 try {
                     conn.write("GET /findingCompetitor");
+                    conn.write(String.valueOf(userData.id));
                     response = conn.read();
 
                 } catch (IOException e) {
@@ -291,11 +292,7 @@ public class MainFormController implements Initializable {
                     break;
                 } else {
                     Platform.runLater(() -> {
-                        try {
-                            conn.write(String.valueOf(userData.id));
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Tìm đối thủ");
                         alert.setHeaderText(null);
