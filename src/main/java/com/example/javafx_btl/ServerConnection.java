@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -52,16 +53,40 @@ public class ServerConnection implements Initializable {
     }
 
     public void updatePlayHistory(playData new_playdata) {
-        currentUser.play_history.add(new_playdata);
-        for (playData i : currentUser.play_history) {
-            System.out.println(i.listQuestions);
+//        currentUser.play_history.add(new_playdata);
+//        for (playData i : currentUser.play_history) {
+//            System.out.println(i.listQuestions);
+//        }
+        System.out.println(String.valueOf(new_playdata));
+        new_playdata.end = new Date();
+        try {
+            write("GET /log");
+            write(String.valueOf(currentUser.id));
+            write(String.valueOf(new_playdata.currentQuestionNumber));
+            write(String.valueOf(new_playdata.begin));
+            write(String.valueOf(new_playdata.end));
+            write(String.valueOf(new_playdata.secondsUsage));
+            write(String.valueOf(new_playdata.listQuestions));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     public void write(String message) throws IOException {
         conn.out.write(message);
         conn.out.newLine();
         conn.out.flush();
+    }
+
+    public String read() {
+        String tmp = null;
+        try {
+            tmp = conn.in.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return tmp;
     }
 
     public boolean loginUser(String username, String password) {

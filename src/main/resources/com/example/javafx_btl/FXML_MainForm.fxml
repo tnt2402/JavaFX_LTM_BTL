@@ -50,7 +50,7 @@
                                  </font>
                               </Label>
                               <Button fx:id="dashboard_btn" layoutX="6.0" layoutY="199.0" mnemonicParsing="false" onAction="#contestMode" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Thi đấu" />
-                              <Button fx:id="inventory_btn" layoutX="6.0" layoutY="248.0" mnemonicParsing="false" onAction="#trainMode" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Luyện tập" />
+                              <Button fx:id="inventory_btn" layoutX="6.0" layoutY="248.0" mnemonicParsing="false" onAction="#trainMode" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="1 vs 1" />
                               <Button fx:id="menu_btn" layoutX="6.0" layoutY="300.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Phòng chờ" />
                               <Button fx:id="customers_btn" layoutX="6.0" layoutY="349.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" />
                               <Button fx:id="logout_btn" layoutX="46.0" layoutY="557.0" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="131.0" stylesheets="@mainFormDesign.css" text="Sign Out" textFill="WHITE" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="46.0">

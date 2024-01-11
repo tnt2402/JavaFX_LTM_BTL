@@ -531,7 +531,6 @@ public class GamePlayController implements Initializable {
         } else {
             currentMoney.setStyle("-fx-background-color: lightblue;");
             currentQuestions.setStyle("-fx-background-color: lightblue;");
-
         }
     }
 
@@ -578,6 +577,9 @@ public class GamePlayController implements Initializable {
             showEffect(true, tmp_answer);
             // logging
             currentPlay.listQuestions.add(ListQnA.get(currentPlay.currentQuestionNumber - 2).id);
+            if (currentPlay.currentQuestionNumber == 15) {
+                serverConnection.updatePlayHistory(currentPlay);
+            }
 
         } else {
             player.Play(config.soundBasePath + "lose_" + (ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans.charAt(0) - 'A' + 1) + ".mp3");

@@ -5,10 +5,11 @@
  */
 package com.example.javafx_btl;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import animatefx.animation.FadeIn;
+import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import animatefx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,26 +19,30 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.*;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.example.javafx_btl.ServerConnection.conn;
 
 public class MainFormController implements Initializable {
     
@@ -227,22 +232,104 @@ public class MainFormController implements Initializable {
     }
 
     public void trainMode() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML_GamePlay.fxml"));
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        Text text = new Text("Đang tìm đối thủ");
 
-            Stage stage = new Stage();
-            Scene scene = new Scene(root);
+        FlowPane root = new FlowPane();
+        root.setPadding(new Insets(10));
+        root.setHgap(10);
+        root.getChildren().addAll(progressIndicator, text);
 
-            stage.setTitle("Ai là triệu phú - version 0.1");
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setTitle("Tìm đối");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
 
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Thread findCompetitorThread = new Thread(() -> {
+            long startTime = System.currentTimeMillis();
+            long timeoutMillis = 30000; // 30 seconds
 
+            while (!Thread.currentThread().isInterrupted()) {
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                long remainingTime = timeoutMillis - TimeUnit.MILLISECONDS.toSeconds(elapsedTime) * 1000;
+                if (remainingTime <= 0) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Tìm đối thủ");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Không tìm thấy đối thủ trong thời gian quy định!");
+                        alert.showAndWait();
+                        stage.close(); // Close the stage
+                    });
+                    break;
+                }
+
+                long seconds = TimeUnit.MILLISECONDS.toSeconds(remainingTime);
+                Platform.runLater(() -> {
+                    text.setText("Đang tìm đối thủ (" + seconds + " giây)");
+                });
+                String response;
+                try {
+                    conn.write("GET /findingCompetitor");
+                    response = conn.read();
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if (response.equals("Not found")) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Tìm đối thủ");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Không tìm thấy đối thủ!");
+                        alert.showAndWait();
+                        stage.close(); // Close the stage
+                    });
+                    break;
+                } else {
+                    Platform.runLater(() -> {
+                        try {
+                            conn.write(String.valueOf(userData.id));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Tìm đối thủ");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Đã tìm thấy đối thủ!");
+                        alert.showAndWait();
+
+                        // Continue with competing logic using the response string
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML_GamePlay.fxml"));
+                        try {
+//                            Parent root = null;
+
+                            Parent root_ = loader.load();
+                            Scene scene_ = new Scene(root_);
+                            Stage currentStage = stage;
+
+                            currentStage.setScene(scene_);
+                            currentStage.setTitle("Ai là triệu phú - version 0.1");
+                            currentStage.show();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    });
+                    break;
+                }
+            }
+        });
+
+        findCompetitorThread.start();
+
+        stage.setOnCloseRequest(event -> {
+            findCompetitorThread.interrupt(); // Stop the thread if the stage is closed
+        });
     }
-    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
