@@ -804,9 +804,9 @@ public class GamePlayController implements Initializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        player.Play(config.soundBasePath + "tro_giup_dung_choi.mp3");
 
         if (exitButton.getText().equals("Dừng thi")) {
+            player.Play(config.soundBasePath + "tro_giup_dung_choi.mp3");
             Alert confirmExit = new Alert(Alert.AlertType.CONFIRMATION);
             confirmExit.setTitle("Confirmation Dialog");
             confirmExit.setHeaderText("Dừng chơi");
