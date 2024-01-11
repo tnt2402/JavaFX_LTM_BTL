@@ -9,6 +9,8 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,7 +20,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.concurrent.Task;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -29,13 +33,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
+
 import static java.lang.Thread.sleep;
 
 public class GamePlayController implements Initializable {
     private ServerConnection serverConnection;
     AudioPlayer player = new AudioPlayer();
     Random random = new Random();
-
 
     public Stage stg;
 
@@ -62,6 +66,13 @@ public class GamePlayController implements Initializable {
 
     @FXML
     private Button ans_a, ans_b, ans_c, ans_d, exitButton;
+
+    @FXML
+    private ImageView fiftyfifty;
+
+    @FXML
+    private ImageView audiences;
+
 
     private ArrayList<questionAnswerData> ListQnA = new ArrayList<questionAnswerData>();
 
@@ -367,65 +378,72 @@ public class GamePlayController implements Initializable {
 //        primaryStage.setTitle("JavaFX Alert Demo");
 //        primaryStage.setScene(new Scene(root, 400, 300));
 //        primaryStage.show();
-        stopCountdown();
-        player.Play(config.soundBasePath + "sound_chon_50_50.mp3");
-        player.Play(config.soundBasePath + "sound_trogiup_50_50.mp3");
+        fiftyfifty.setDisable(true);
+            stopCountdown();
+            player.Play(config.soundBasePath + "sound_chon_50_50.mp3");
+            player.Play(config.soundBasePath + "sound_trogiup_50_50.mp3");
 
-        while (player.getStatus()) {
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-                e.printStackTrace();
+            while (player.getStatus()) {
+                try {
+                    Thread.sleep(100);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
-//        showAlert("Hệ thống đã bỏ 2 đáp án sai!");
-        List<String> list = new ArrayList<>();
-        list.add("A");
-        list.add("B");
-        list.add("C");
-        list.add("D");
+//            showAlert("Hệ thống đã bỏ 2 đáp án sai!");
+            List<String> list = new ArrayList<>();
+            list.add("A");
+            list.add("B");
+            list.add("C");
+            list.add("D");
 
-        String variable = ListQnA.get(currentPlay.currentQuestionNumber-1).true_ans;
+            String variable = ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans;
 
-        List<String> filteredList = new ArrayList<>();
-        // Filter the list to exclude the variable
-        for (String element : list) {
-            if (!element.equals(variable)) {
-                filteredList.add(element);
-            }
-        }
-
-        if (filteredList.size() >= 2) {
-            List<String> randomElements = new ArrayList<>();
-            Random random = new Random();
-
-            // Select two random elements
-            while (randomElements.size() < 2) {
-                int randomIndex = random.nextInt(filteredList.size());
-                String randomElement = filteredList.get(randomIndex);
-
-                if (!randomElements.contains(randomElement)) {
-                    randomElements.add(randomElement);
+            List<String> filteredList = new ArrayList<>();
+            // Filter the list to exclude the variable
+            for (String element : list) {
+                if (!element.equals(variable)) {
+                    filteredList.add(element);
                 }
             }
 
-            System.out.println(randomElements);
+            if (filteredList.size() >= 2) {
+                List<String> randomElements = new ArrayList<>();
+                Random random = new Random();
 
-            Scene currentScene = ans_a.getScene();
-            for (String i: randomElements) {
-                System.out.println(currentPlay.currentQuestionNumber);
-                Button iAns = (Button) currentScene.lookup(String.format("#ans_%s", i.toLowerCase()));
-                iAns.setDisable(true);
+                // Select two random elements
+                while (randomElements.size() < 2) {
+                    int randomIndex = random.nextInt(filteredList.size());
+                    String randomElement = filteredList.get(randomIndex);
+
+                    if (!randomElements.contains(randomElement)) {
+                        randomElements.add(randomElement);
+                    }
+                }
+
+                System.out.println(randomElements);
+
+                Scene currentScene = ans_a.getScene();
+                for (String i : randomElements) {
+                    System.out.println(currentPlay.currentQuestionNumber);
+                    Button iAns = (Button) currentScene.lookup(String.format("#ans_%s", i.toLowerCase()));
+                    iAns.setDisable(true);
+                }
+
+
             }
+            fiftyfifty.setDisable(true);
+            continueCountdown();
 
 
-        }
-        continueCountdown();
     }
 
 
     @FXML
     private void audiencesSuggest() {
+        audiences.setDisable(true);
+//        Image newImage = new Image("file:audiences.png");
+//        audiences.setImage(newImage);
         stopCountdown();
         player.Play(config.soundBasePath + "sound_chon_y_kien.mp3");
         player.Play(config.soundBasePath + "sound_tro_giup_hoi_y_kien.mp3");
@@ -542,6 +560,14 @@ public class GamePlayController implements Initializable {
         Scene currentScene = ans_a.getScene();
         currentAns = (Button) currentScene.lookup(String.format("#ans_%s", tmp_answer.toLowerCase()));
         currentAns.setStyle("-fx-background-color: lightblue;");
+
+        List<String> abcd = List.of(new String[]{"a", "b", "c", "d"});
+        for (String i: abcd) {
+            if (!i.equals(tmp_answer.toLowerCase())) {
+                currentAns = (Button) currentScene.lookup(String.format("#ans_%s", i));
+                currentAns.setDisable(true);
+            }
+        }
 
         while (player.getStatus()) {
             int a = 1;
@@ -715,20 +741,57 @@ public class GamePlayController implements Initializable {
     }
 
     public void ans_a_clicked(ActionEvent actionEvent) {
-        checkAnswer("A");
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                checkAnswer("A");
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     public void ans_b_clicked(ActionEvent actionEvent) {
-        checkAnswer("B");
-    }
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                checkAnswer("B");
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();    }
 
     public void ans_c_clicked(ActionEvent actionEvent) {
-        checkAnswer("C");
-    }
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                checkAnswer("C");
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();    }
 
     public void ans_d_clicked(ActionEvent actionEvent) {
-        checkAnswer("D");
-    }
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                checkAnswer("D");
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();    }
     //
     public Stage getStage() {
         Stage stage = (Stage) ans_a.getScene().getWindow();
@@ -736,6 +799,43 @@ public class GamePlayController implements Initializable {
     }
 
     public void handleExitButton(ActionEvent actionEvent) {
+        try {
+            player.stop();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        player.Play(config.soundBasePath + "tro_giup_dung_choi.mp3");
+
+        if (exitButton.getText().equals("Dừng thi")) {
+            Alert confirmExit = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmExit.setTitle("Confirmation Dialog");
+            confirmExit.setHeaderText("Dừng chơi");
+            confirmExit.setContentText("Bạn muốn dừng cuộc chơi tại đây?");
+
+            Optional<ButtonType> result = confirmExit.showAndWait();
+            if (result.orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                back2MainForm(actionEvent);
+            }
+        } else {
+            back2MainForm(actionEvent);
+        }
+
+    }
+
+    private void back2MainForm(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML_MainForm.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+            currentStage.setScene(scene);
+            currentStage.setTitle("Ai là triệu phú - version 0.1");
+            currentStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
