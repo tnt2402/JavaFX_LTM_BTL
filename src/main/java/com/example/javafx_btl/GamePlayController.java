@@ -11,6 +11,7 @@ import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -42,7 +43,11 @@ public class GamePlayController implements Initializable {
     Random random = new Random();
 
     public Stage stg;
+    @FXML
+    private Button playButton;
 
+    @FXML
+    private AnchorPane questionField;
     @FXML
     private Label userField;
     // timer clock
@@ -309,6 +314,7 @@ public class GamePlayController implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        questionField.setVisible(false);
         serverConnection = FXMLLogin.conn;
         displayUsername();
         GetQuestionFromServer();
@@ -318,7 +324,7 @@ public class GamePlayController implements Initializable {
         currentPlay.secondsUsage = 0;
         currentPlay.begin = new Date();
         currentPlay.listQuestions = new ArrayList<>();
-        PlayButton();
+//        PlayButton();
 
     }
 
@@ -841,6 +847,14 @@ public class GamePlayController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void handlePlayButton(ActionEvent actionEvent) {
+        questionField.setVisible(true);
+        playButton.setVisible(false);
+        clockSetup();
+        startCountdown();
+        Play();
     }
 }
 

@@ -13,7 +13,11 @@
    <center>
       <AnchorPane fx:id="user" prefHeight="700.0" prefWidth="950.0" styleClass="nav-form" stylesheets="@mainFormDesign.css" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane layoutX="199.0" layoutY="100.0" prefHeight="500.0" prefWidth="790.0" styleClass="nav-form" stylesheets="@mainFormDesign.css">
+            <Button fx:id="playButton" alignment="CENTER" layoutX="548.0" layoutY="300.0" mnemonicParsing="false" onAction="#handlePlayButton" prefHeight="40.0" prefWidth="100.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Play">
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
+            <AnchorPane fx:id="questionField" layoutX="199.0" layoutY="100.0" prefHeight="500.0" prefWidth="790.0" styleClass="nav-form" stylesheets="@mainFormDesign.css">
                <children>
                   <TextArea fx:id="questionField_2" cacheShape="false" centerShape="false" editable="false" focusTraversable="false" layoutX="165.0" layoutY="101.0" mouseTransparent="true" prefHeight="147.0" prefWidth="470.0" scaleShape="false" styleClass="text-area" stylesheets="@mainFormDesign.css" wrapText="true">
                      <font>
