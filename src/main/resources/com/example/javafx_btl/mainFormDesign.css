@@ -30,7 +30,7 @@
     -fx-background-color: linear-gradient(to bottom right, #0f6789, #286155);
 }
 
-.nav-btn{
+.nav-btn, ans-a{
     -fx-background-color: transparent;
     -fx-border-color: #fff;
     -fx-border-width: .4px;
@@ -38,7 +38,7 @@
     -fx-text-fill: #fff;
     -fx-font-size: 14px;
 }
-.nav-btn:hover{
+.nav-btn:hover, .ans-a:hover{
     -fx-background-color: #fff;
     -fx-text-fill: #000;
 }

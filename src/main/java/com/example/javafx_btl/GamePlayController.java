@@ -12,6 +12,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -30,6 +32,7 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
@@ -238,10 +241,18 @@ public class GamePlayController implements Initializable {
 
 
         // Set all button to lightblue
-            ans_a.setStyle("-fx-background-color: transparent;");
-            ans_b.setStyle("-fx-background-color: transparent;");
-            ans_c.setStyle("-fx-background-color: transparent;");
-            ans_d.setStyle("-fx-background-color: transparent;");
+//            ans_a.setStyle("-fx-background-color: transparent;");
+//            ans_b.setStyle("-fx-background-color: transparent;");
+//            ans_c.setStyle("-fx-background-color: transparent;");
+//            ans_d.setStyle("-fx-background-color: transparent;");
+            ans_a.getStyleClass().add("nav-btn");
+            ans_b.getStyleClass().add("nav-btn");
+            ans_c.getStyleClass().add("nav-btn");
+            ans_d.getStyleClass().add("nav-btn");
+            ans_a.getStyleClass().add("ans-a");
+            ans_b.getStyleClass().add("ans-a");
+            ans_c.getStyleClass().add("ans-a");
+            ans_d.getStyleClass().add("ans-a");
             if (ListQnA != null) {
                 questionAnswerData i = ListQnA.get(currentPlay.currentQuestionNumber - 1);
                 ans_a.setDisable(false);
@@ -438,7 +449,7 @@ public class GamePlayController implements Initializable {
 
 
             }
-            fiftyfifty.setDisable(true);
+            fiftyfifty.setVisible(false);
             continueCountdown();
 
 
@@ -537,7 +548,7 @@ public class GamePlayController implements Initializable {
             timeline.play();
         });
         primaryStage.show();
-
+        audiences.setVisible(false);
     }
 
     @FXML
@@ -678,8 +689,13 @@ public class GamePlayController implements Initializable {
             Button finalCurrentAns = currentAns;
             blinkTimeline.setOnFinished(event -> {
                 Platform.runLater(() -> {
-                    finalTrueAns.setStyle("-fx-background-color: transparent;"); // Set back to default color
-                    finalCurrentAns.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+//                    finalTrueAns.setStyle("-fx-background-color: transparent;"); // Set back to default color
+//                    finalCurrentAns.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+                    finalTrueAns.getStyleClass().add("nav-btn");
+                    finalTrueAns.getStyleClass().add("ans-a");
+                    finalCurrentAns.getStyleClass().add("nav-btn");
+                    finalCurrentAns.getStyleClass().add("ans-a");
+
                 });
                 failed();
             });
