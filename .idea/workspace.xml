@@ -5,8 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="abf977fb-379c-4858-9349-a2f6863de4eb" name="Changes" comment="amen">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLPhoneSuggest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLPlayHistory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/GamePlayController_CompetitiveMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/PlayHistoryEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_GamePlay_competitiveMode.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_PhoneSuggest.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_playHistory.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/phone.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLFailed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/FXMLFailed.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/GamePlayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/GamePlayController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/MainFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/MainFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/ServerConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/ServerConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/playData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/javafx_btl/playData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_GamePlay.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_GamePlay.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_MainForm.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/FXML_MainForm.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/mainFormDesign.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/javafx_btl/mainFormDesign.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -290,7 +304,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704953337761</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="amen">
+      <option name="closed" value="true" />
+      <created>1705037749120</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1705037749120</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -14,11 +14,8 @@ import javafx.fxml.Initializable;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-
-import javax.xml.transform.sax.SAXSource;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ServerConnection implements Initializable {
     Logger logger = Logger.getLogger(ServerConnection.class.getName());
@@ -52,6 +49,32 @@ public class ServerConnection implements Initializable {
         currentUser.username = username;
     }
 
+    public List<JSONObject> getUserPlayHistory() {
+        String tmp = null;
+        List<JSONObject> jsonObjectList;
+        try {
+            write("GET /log");
+            write(String.valueOf(userData.id));
+            tmp = read();
+            JSONArray jsonArray = new JSONArray(tmp);
+
+            jsonObjectList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                jsonObjectList.add(jsonObject);
+            }
+
+            // Print the list of JSON objects
+//            for (JSONObject jsonObject : jsonObjectList) {
+//                System.out.println(jsonObject);
+//            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return jsonObjectList;
+    }
+
     public void updatePlayHistory(playData new_playdata) {
 //        currentUser.play_history.add(new_playdata);
 //        for (playData i : currentUser.play_history) {
@@ -60,13 +83,14 @@ public class ServerConnection implements Initializable {
         System.out.println(String.valueOf(new_playdata));
         new_playdata.end = new Date();
         try {
-            write("GET /log");
+            write("POST /log_competitor");
             write(String.valueOf(currentUser.id));
             write(String.valueOf(new_playdata.listQuestions.size()));
             write(String.valueOf(new_playdata.begin));
             write(String.valueOf(new_playdata.end));
             write(String.valueOf(new_playdata.secondsUsage));
             write(String.valueOf(new_playdata.listQuestions));
+            write(String.valueOf(new_playdata.md5sum));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -85,6 +109,7 @@ public class ServerConnection implements Initializable {
             tmp = conn.in.readLine();
         } catch (IOException e) {
             throw new RuntimeException(e);
+
         }
         return tmp;
     }
@@ -122,6 +147,35 @@ public class ServerConnection implements Initializable {
             return false; // An error occurred during the connection
         }
     }
+
+    public List<Object> getData_competitive() {
+        currentUser.play_history = new ArrayList<>();
+
+        try {
+//            write("GET /data");
+            StringBuilder jsonData = new StringBuilder();
+            String receivedData;
+
+//            while ((line = in.readLine()) != null) {
+//                jsonData.append(line);
+//            }
+            receivedData = conn.in.readLine();
+
+            // Process the received JSON data
+//            String receivedData = jsonData.toString();
+//            System.out.println("Received JSON data:\n" + receivedData);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Object> jsonObjects = objectMapper.readValue(receivedData, List.class);
+            System.out.println(jsonObjects);
+
+            return jsonObjects;
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "An error occurred during data retrieval", e);
+            return null; // An error occurred during data retrieval
+        }
+    }
+
 
     public List<Object> getData() {
         currentUser.play_history = new ArrayList<>();

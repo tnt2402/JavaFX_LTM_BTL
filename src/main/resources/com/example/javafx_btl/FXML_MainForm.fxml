@@ -32,14 +32,14 @@
                            <children>
                               <AnchorPane layoutX="11.0" layoutY="37.0" prefHeight="87.0" prefWidth="222.0" styleClass="header" stylesheets="@mainFormDesign.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Label layoutX="43.0" layoutY="17.0" text="Home" textFill="WHITE">
+                                    <Label layoutX="43.0" layoutY="17.0" textFill="WHITE">
                                        <font>
                                           <Font size="51.0" />
                                        </font>
                                     </Label>
                                  </children>
                               </AnchorPane>
-                              <Label layoutX="14.0" layoutY="103.0" text="Welcome, " textFill="WHITE">
+                              <Label layoutX="14.0" layoutY="103.0" text="Xin chào, " textFill="WHITE">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
@@ -51,9 +51,9 @@
                               </Label>
                               <Button fx:id="dashboard_btn" layoutX="6.0" layoutY="199.0" mnemonicParsing="false" onAction="#contestMode" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Thi đấu" />
                               <Button fx:id="inventory_btn" layoutX="6.0" layoutY="248.0" mnemonicParsing="false" onAction="#trainMode" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="1 vs 1" />
-                              <Button fx:id="menu_btn" layoutX="6.0" layoutY="300.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Phòng chờ" />
+                              <Button fx:id="menu_btn" layoutX="6.0" layoutY="300.0" mnemonicParsing="false" onAction="#showAllHistory" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Lịch sử đấu" />
                               <Button fx:id="customers_btn" layoutX="6.0" layoutY="349.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" />
-                              <Button fx:id="logout_btn" layoutX="46.0" layoutY="557.0" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="131.0" stylesheets="@mainFormDesign.css" text="Sign Out" textFill="WHITE" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="46.0">
+                              <Button fx:id="logout_btn" layoutX="46.0" layoutY="557.0" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="131.0" stylesheets="@mainFormDesign.css" text="Đăng xuất" textFill="WHITE" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="46.0">
                               
                                  <styleClass>
                                     <String fx:value="logout" />
@@ -73,46 +73,51 @@
                      <children>
                         <AnchorPane fx:id="dashboard_form" layoutX="196.0" layoutY="185.0" prefHeight="600.0" prefWidth="878.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="169.0" prefWidth="852.0" stylesheets="@mainFormDesign.css" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="14.0">
+                              <AnchorPane layoutX="15.2" layoutY="14.0" prefHeight="102.0" prefWidth="851.0" stylesheets="@mainFormDesign.css" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="14.0">
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="radius" />
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <AnchorPane prefHeight="154.0" prefWidth="814.0" />
+                                    <AnchorPane layoutY="14.0" prefHeight="98.0" prefWidth="814.0" />
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="14.0" layoutY="206.0" prefHeight="380.0" prefWidth="851.0" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="206.0">
+                              <AnchorPane layoutX="15.2" layoutY="136.0" prefHeight="450.0" prefWidth="850.0" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="136.0">
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="radius" />
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <AnchorPane layoutX="14.0" layoutY="18.0" prefHeight="344.0" prefWidth="413.0" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="424.0" AnchorPane.topAnchor="18.0">
+                                    <AnchorPane fx:id="history" layoutX="14.0" layoutY="19.2" prefHeight="342.0" prefWidth="824.0" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="19.0">
                                        <styleClass>
                                           <String fx:value="white-bg" />
                                           <String fx:value="shadow" />
                                           <String fx:value="radius" />
                                        </styleClass>
                                        <children>
-                                          <AreaChart fx:id="dashboard_incomeChart" layoutX="-11.0" layoutY="-38.0" prefHeight="362.0" prefWidth="489.0" title="Lịch sử điểm" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <xAxis>
-                                              <CategoryAxis side="BOTTOM" />
-                                            </xAxis>
-                                            <yAxis>
-                                              <NumberAxis side="LEFT" />
-                                            </yAxis>
-                                          </AreaChart>
+<!--                                          <AreaChart fx:id="dashboard_incomeChart" alternativeRowFillVisible="false" animated="false" layoutX="-11.0" layoutY="23.2" prefHeight="342.0" prefWidth="797.0" title="Lịch sử điểm" verticalZeroLineVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="0.0">-->
+<!--                                            <xAxis>-->
+<!--                                              <CategoryAxis side="BOTTOM" />-->
+<!--                                            </xAxis>-->
+<!--                                            <yAxis>-->
+<!--                                              <NumberAxis minorTickCount="0" side="LEFT" tickLabelGap="1.0" tickLength="5.0" tickMarkVisible="false" tickUnit="1.0" upperBound="14.0" />-->
+<!--                                            </yAxis>-->
+<!--                                          </AreaChart>-->
+                                          <ScrollPane fx:id="scrollPane" hbarPolicy="ALWAYS" prefHeight="416.0" prefWidth="824.0">
+                                             <content>
+                                                <AreaChart fx:id="dashboard_incomeChart" alternativeRowFillVisible="false" animated="false" layoutX="-11.0" layoutY="23.2" prefHeight="400.0" prefWidth="818.0" stylesheets="@mainFormDesign.css" title="Lịch sử điểm" verticalZeroLineVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="0.0">
+                                                   <xAxis>
+                                                      <CategoryAxis animated="false" side="BOTTOM" tickLabelRotation="90.0" />
+                                                   </xAxis>
+                                                   <yAxis>
+                                                      <NumberAxis minorTickCount="0" prefHeight="336.0" prefWidth="19.0" side="LEFT" tickLabelGap="1.0" tickLength="15.0" tickMarkVisible="false" tickUnit="1.0" upperBound="14.0" />
+                                                   </yAxis>
+                                                </AreaChart>
+                                             </content>
+                                          </ScrollPane>
                                        </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="486.0" layoutY="18.0" prefHeight="344.0" prefWidth="393.0" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="18.0">
-                                       <styleClass>
-                                          <String fx:value="white-bg" />
-                                          <String fx:value="shadow" />
-                                          <String fx:value="radius" />
-                                       </styleClass>
                                     </AnchorPane>
                                  </children>
                               </AnchorPane>

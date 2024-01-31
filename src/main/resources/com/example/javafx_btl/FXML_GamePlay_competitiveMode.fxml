@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx_btl.GamePlayController_CompetitiveMode">
+   <center>
+      <AnchorPane fx:id="user" prefHeight="700.0" prefWidth="950.0" styleClass="nav-form" stylesheets="@mainFormDesign.css" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="playButton" alignment="CENTER" layoutX="548.0" layoutY="300.0" mnemonicParsing="false" onAction="#handlePlayButton" prefHeight="40.0" prefWidth="100.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Play">
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
+            <AnchorPane fx:id="questionField" layoutX="199.0" layoutY="100.0" prefHeight="500.0" prefWidth="790.0" styleClass="nav-form" stylesheets="@mainFormDesign.css">
+               <children>
+                  <TextArea fx:id="questionField_2" cacheShape="false" centerShape="false" editable="false" focusTraversable="false" layoutX="165.0" layoutY="101.0" mouseTransparent="true" prefHeight="147.0" prefWidth="470.0" scaleShape="false" styleClass="text-area" stylesheets="@mainFormDesign.css" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </TextArea>
+                  <Button fx:id="ans_a" layoutX="165.0" layoutY="312.0" mnemonicParsing="false" onAction="#ans_a_clicked" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" />
+                  <Button fx:id="ans_b" layoutX="424.0" layoutY="312.0" mnemonicParsing="false" onAction="#ans_b_clicked" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" />
+                  <Button fx:id="ans_c" layoutX="165.0" layoutY="370.0" mnemonicParsing="false" onAction="#ans_c_clicked" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" />
+                  <Button fx:id="ans_d" layoutX="424.0" layoutY="370.0" mnemonicParsing="false" onAction="#ans_d_clicked" prefHeight="40.0" prefWidth="210.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" />
+                  <Label fx:id="timerLabel" layoutX="350.0" layoutY="21.0" prefHeight="70.0" prefWidth="100.0" text="00:00" textAlignment="CENTER">
+                     <font>
+                        <Font name="Agency FB Bold" size="48.0" />
+                     </font>
+                  </Label>
+
+               </children></AnchorPane>
+            <Button fx:id="exitButton" layoutX="44.0" layoutY="613.0" mnemonicParsing="false" onAction="#handleExitButton" prefHeight="42.0" prefWidth="94.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="Dừng thi" textFill="#ef2424">
+               <font>
+                  <Font name="System Bold" size="31.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="73.0" fitWidth="113.0" layoutX="44.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@user.gif" />
+               </image>
+            </ImageView>
+            <Label layoutX="130.0" layoutY="16.0" prefHeight="34.0" prefWidth="99.0" text="Người chơi" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="userField" layoutX="130.0" layoutY="50.0" prefHeight="34.0" prefWidth="99.0" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </center>
+   <right>
+      <AnchorPane prefHeight="500.0" prefWidth="220.0" styleClass="nav-form" stylesheets="@mainFormDesign.css" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="money_15" layoutX="73.0" layoutY="79.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="250,000,000" />
+            <Button fx:id="money_14" layoutX="73.0" layoutY="120.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="150,000,000" />
+            <Button fx:id="money_13" layoutX="73.0" layoutY="159.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="80,000,000" />
+            <Button fx:id="money_12" layoutX="73.0" layoutY="198.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="40,000,000" />
+            <Button fx:id="money_11" layoutX="73.0" layoutY="235.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="30,000,000" />
+            <Button fx:id="money_10" layoutX="73.0" layoutY="276.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="22,000,000" />
+            <Button fx:id="money_9" layoutX="73.0" layoutY="318.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="14,000,000" />
+            <Button fx:id="money_8" layoutX="73.0" layoutY="360.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="10,000,000" />
+            <Button fx:id="money_7" layoutX="73.0" layoutY="398.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="6,000,000" />
+            <Button fx:id="money_6" layoutX="73.0" layoutY="438.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="3,000,000" />
+            <Button fx:id="money_5" layoutX="73.0" layoutY="477.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="2,000,000" />
+            <Button fx:id="money_4" layoutX="73.0" layoutY="518.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="1,000,000" />
+            <Button fx:id="money_3" layoutX="73.0" layoutY="556.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="600,000" />
+            <Button fx:id="money_2" layoutX="73.0" layoutY="595.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="400,000" />
+            <Button fx:id="money_1" layoutX="73.0" layoutY="636.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="154.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="200,000" />
+            <ImageView fx:id="fiftyfifty" fitHeight="53.0" fitWidth="97.0" layoutX="22.0" layoutY="14.0" onMouseClicked="#fiftyfifty_clicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@5050.gif" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="audiences" fitHeight="53.0" fitWidth="97.0" layoutX="129.0" layoutY="14.0" onMouseClicked="#audiencesSuggest" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@audiences.gif" />
+               </image>
+            </ImageView>
+            <Button fx:id="question_1" layoutX="22.0" layoutY="636.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="1" />
+            <Button fx:id="question_2" layoutX="22.0" layoutY="595.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="2" />
+            <Button fx:id="question_3" layoutX="22.0" layoutY="556.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="3" />
+            <Button fx:id="question_4" layoutX="22.0" layoutY="518.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="4" />
+            <Button fx:id="question_5" layoutX="22.0" layoutY="477.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="5" />
+            <Button fx:id="question_6" layoutX="22.0" layoutY="438.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="6" />
+            <Button fx:id="question_7" layoutX="22.0" layoutY="398.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="7" />
+            <Button fx:id="question_8" layoutX="22.0" layoutY="360.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="8" />
+            <Button fx:id="question_9" layoutX="22.0" layoutY="318.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="9" />
+            <Button fx:id="question_10" layoutX="22.0" layoutY="276.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="10" />
+            <Button fx:id="question_11" layoutX="22.0" layoutY="235.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="11" />
+            <Button fx:id="question_12" layoutX="22.0" layoutY="198.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="12" />
+            <Button fx:id="question_13" layoutX="22.0" layoutY="159.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="13" />
+            <Button fx:id="question_14" layoutX="22.0" layoutY="120.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="14" />
+            <Button fx:id="question_15" layoutX="22.0" layoutY="79.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="35.0" styleClass="nav-btn" stylesheets="@mainFormDesign.css" text="15" />
+
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>

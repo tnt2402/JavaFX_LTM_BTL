@@ -4,15 +4,14 @@ import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,15 +29,15 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import static java.lang.Thread.sleep;
 
-public class GamePlayController implements Initializable {
+public class GamePlayController_CompetitiveMode implements Initializable {
     private ServerConnection serverConnection;
     AudioPlayer player = new AudioPlayer();
     Random random = new Random();
@@ -79,20 +78,44 @@ public class GamePlayController implements Initializable {
     @FXML
     private ImageView audiences;
 
-    @FXML
-    private ImageView phone;
-
+    private String md5Hash;
 
     private ArrayList<questionAnswerData> ListQnA = new ArrayList<questionAnswerData>();
 
-    public GamePlayController() {
+    public GamePlayController_CompetitiveMode() {
     }
 
 
 
     private void GetQuestionFromServer() {
 //        boolean a = FXMLLogin.conn.loginUser("test", "test");
-        List<Object> jsonObjects = serverConnection.getData();
+        List<Object> jsonObjects = serverConnection.getData_competitive();
+        try {
+            // Create an instance of MessageDigest with "MD5" algorithm
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+
+            // Convert the input string to bytes
+            byte[] inputBytes = String.valueOf(jsonObjects).getBytes();
+
+            // Calculate the MD5 hash
+            byte[] hashBytes = md5.digest(inputBytes);
+
+            // Convert the hash bytes to a hexadecimal string
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xFF & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            md5Hash = hexString.toString();
+
+
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("MD5 algorithm not available.");
+        }
 
         while (jsonObjects == null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -102,7 +125,7 @@ public class GamePlayController implements Initializable {
             Optional<ButtonType> option = alert.showAndWait();
 
             if (option.get().equals(ButtonType.OK)) {
-                jsonObjects = serverConnection.getData();
+                jsonObjects = serverConnection.getData_competitive();
             } else if (option.get().equals(ButtonType.CANCEL)) {
                 break;
             }
@@ -246,63 +269,63 @@ public class GamePlayController implements Initializable {
 //            ans_b.setStyle("-fx-background-color: transparent;");
 //            ans_c.setStyle("-fx-background-color: transparent;");
 //            ans_d.setStyle("-fx-background-color: transparent;");
-            ans_a.getStyleClass().add("nav-btn");
-            ans_b.getStyleClass().add("nav-btn");
-            ans_c.getStyleClass().add("nav-btn");
-            ans_d.getStyleClass().add("nav-btn");
-            ans_a.getStyleClass().add("ans-a");
-            ans_b.getStyleClass().add("ans-a");
-            ans_c.getStyleClass().add("ans-a");
-            ans_d.getStyleClass().add("ans-a");
-            if (ListQnA != null) {
-                questionAnswerData i = ListQnA.get(currentPlay.currentQuestionNumber - 1);
-                ans_a.setDisable(false);
-                ans_b.setDisable(false);
-                ans_c.setDisable(false);
-                ans_d.setDisable(false);
+        ans_a.getStyleClass().add("nav-btn");
+        ans_b.getStyleClass().add("nav-btn");
+        ans_c.getStyleClass().add("nav-btn");
+        ans_d.getStyleClass().add("nav-btn");
+        ans_a.getStyleClass().add("ans-a");
+        ans_b.getStyleClass().add("ans-a");
+        ans_c.getStyleClass().add("ans-a");
+        ans_d.getStyleClass().add("ans-a");
+        if (ListQnA != null) {
+            questionAnswerData i = ListQnA.get(currentPlay.currentQuestionNumber - 1);
+            ans_a.setDisable(false);
+            ans_b.setDisable(false);
+            ans_c.setDisable(false);
+            ans_d.setDisable(false);
 
 
-                switch (currentPlay.currentQuestionNumber) {
-                    case 1:
-                        player.Play(config.soundBasePath + "huong_dan.mp3");
-                        player.Play(config.soundBasePath + "san_sang_choi_chua.mp3");
-                        player.Play(config.soundBasePath + "nguoi_choi_ss.mp3");
-                        break;
-                    case 6:
-                        player.Play(config.soundBasePath + "vuot5.mp3");
-                        break;
-                    case 11:
-                        player.Play(config.soundBasePath + "vuot10.mp3");
-                        break;
-                    case 16:
-                        player.Play(config.soundBasePath + "vuotcuoi.mp3");
-                        break;
+            switch (currentPlay.currentQuestionNumber) {
+                case 1:
+                    player.Play(config.soundBasePath + "huong_dan.mp3");
+                    player.Play(config.soundBasePath + "san_sang_choi_chua.mp3");
+                    player.Play(config.soundBasePath + "nguoi_choi_ss.mp3");
+                    break;
+                case 6:
+                    player.Play(config.soundBasePath + "vuot5.mp3");
+                    break;
+                case 11:
+                    player.Play(config.soundBasePath + "vuot10.mp3");
+                    break;
+                case 16:
+                    player.Play(config.soundBasePath + "vuotcuoi.mp3");
+                    break;
+            }
+
+
+            while (player.getStatus()) {
+                try {
+                    Thread.sleep(100); // Adjust the sleep duration if needed
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-
-
-                while (player.getStatus()) {
-                    try {
-                        Thread.sleep(100); // Adjust the sleep duration if needed
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            }
+            player.Play(config.soundBasePath + "start_cau" + currentPlay.currentQuestionNumber + ".mp3");
+            while (player.getStatus()) {
+                try {
+                    Thread.sleep(100); // Adjust the sleep duration if needed
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                player.Play(config.soundBasePath + "start_cau" + currentPlay.currentQuestionNumber + ".mp3");
-                while (player.getStatus()) {
-                    try {
-                        Thread.sleep(100); // Adjust the sleep duration if needed
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                questionField_2.setText(i.question);
-                ans_a.setText(i.ans_a);
-                ans_b.setText(i.ans_b);
-                ans_c.setText(i.ans_c);
-                ans_d.setText(i.ans_d);
-                player.Play(config.soundBasePath + i.path + ".mp3");
+            }
+            questionField_2.setText(i.question);
+            ans_a.setText(i.ans_a);
+            ans_b.setText(i.ans_b);
+            ans_c.setText(i.ans_c);
+            ans_d.setText(i.ans_d);
+            player.Play(config.soundBasePath + i.path + ".mp3");
 
-                // Set timer
+            // Set timer
 //                while (player.getStatus()) {
 //                    try {
 //                        Thread.sleep(100); // Adjust the sleep duration if needed
@@ -311,10 +334,10 @@ public class GamePlayController implements Initializable {
 //                    }
 //                }
 
-                startCountdown();
-                timeline.play();
+            startCountdown();
+            timeline.play();
 
-            }
+        }
 
 
     }
@@ -336,13 +359,9 @@ public class GamePlayController implements Initializable {
         currentPlay.secondsUsage = 0;
         currentPlay.begin = new Date();
         currentPlay.listQuestions = new ArrayList<>();
+        currentPlay.md5sum = md5Hash;
 //        PlayButton();
-        audiences.setVisible(false);
-        phone.setVisible(false);
-        fiftyfifty.setVisible(false);
-        audiences.setDisable(true);
-        phone.setDisable(true);
-        fiftyfifty.setDisable(true);
+
     }
 
     public void PlayButton() {
@@ -351,7 +370,6 @@ public class GamePlayController implements Initializable {
 
         // Create a Play button
         Button playButton = new Button("Play");
-
         playButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -403,61 +421,61 @@ public class GamePlayController implements Initializable {
 //        primaryStage.setScene(new Scene(root, 400, 300));
 //        primaryStage.show();
         fiftyfifty.setDisable(true);
-            stopCountdown();
-            player.Play(config.soundBasePath + "sound_chon_50_50.mp3");
-            player.Play(config.soundBasePath + "sound_trogiup_50_50.mp3");
+        stopCountdown();
+        player.Play(config.soundBasePath + "sound_chon_50_50.mp3");
+        player.Play(config.soundBasePath + "sound_trogiup_50_50.mp3");
 
-            while (player.getStatus()) {
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        while (player.getStatus()) {
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        }
 //            showAlert("Hệ thống đã bỏ 2 đáp án sai!");
-            List<String> list = new ArrayList<>();
-            list.add("A");
-            list.add("B");
-            list.add("C");
-            list.add("D");
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        list.add("D");
 
-            String variable = ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans;
+        String variable = ListQnA.get(currentPlay.currentQuestionNumber - 1).true_ans;
 
-            List<String> filteredList = new ArrayList<>();
-            // Filter the list to exclude the variable
-            for (String element : list) {
-                if (!element.equals(variable)) {
-                    filteredList.add(element);
+        List<String> filteredList = new ArrayList<>();
+        // Filter the list to exclude the variable
+        for (String element : list) {
+            if (!element.equals(variable)) {
+                filteredList.add(element);
+            }
+        }
+
+        if (filteredList.size() >= 2) {
+            List<String> randomElements = new ArrayList<>();
+            Random random = new Random();
+
+            // Select two random elements
+            while (randomElements.size() < 2) {
+                int randomIndex = random.nextInt(filteredList.size());
+                String randomElement = filteredList.get(randomIndex);
+
+                if (!randomElements.contains(randomElement)) {
+                    randomElements.add(randomElement);
                 }
             }
 
-            if (filteredList.size() >= 2) {
-                List<String> randomElements = new ArrayList<>();
-                Random random = new Random();
+            System.out.println(randomElements);
 
-                // Select two random elements
-                while (randomElements.size() < 2) {
-                    int randomIndex = random.nextInt(filteredList.size());
-                    String randomElement = filteredList.get(randomIndex);
-
-                    if (!randomElements.contains(randomElement)) {
-                        randomElements.add(randomElement);
-                    }
-                }
-
-                System.out.println(randomElements);
-
-                Scene currentScene = ans_a.getScene();
-                for (String i : randomElements) {
-                    System.out.println(currentPlay.currentQuestionNumber);
-                    Button iAns = (Button) currentScene.lookup(String.format("#ans_%s", i.toLowerCase()));
-                    iAns.setDisable(true);
-                }
-
-
+            Scene currentScene = ans_a.getScene();
+            for (String i : randomElements) {
+                System.out.println(currentPlay.currentQuestionNumber);
+                Button iAns = (Button) currentScene.lookup(String.format("#ans_%s", i.toLowerCase()));
+                iAns.setDisable(true);
             }
-            fiftyfifty.setVisible(false);
-            continueCountdown();
+
+
+        }
+        fiftyfifty.setVisible(false);
+        continueCountdown();
 
 
     }
@@ -556,46 +574,6 @@ public class GamePlayController implements Initializable {
         });
         primaryStage.show();
         audiences.setVisible(false);
-    }
-
-    @FXML
-    private void phoneSuggest() {
-        phone.setDisable(true);
-
-        stopCountdown();
-
-        // player.Play(config.soundBasePath + "sound_chon_y_kien.mp3");
-        player.Play(config.soundBasePath + "sound_goi_dien.mp3");
-
-        while (player.getStatus()) {
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        phone.setVisible(false);
-
-        // Create the phone screen layout using a GridPane
-        GridPane phoneScreen = new GridPane();
-        phoneScreen.setAlignment(Pos.CENTER);
-        phoneScreen.setHgap(10);
-
-        // Create components for the picture and text
-        Label text = new Label("Your text goes here");
-
-
-        phoneScreen.add(text, 0, 0);
-
-        // Create a new stage/window to display the phone screen
-        Stage phoneStage = new Stage();
-        phoneStage.setTitle("Phone Screen");
-        phoneStage.setScene(new Scene(phoneScreen));
-        phoneStage.setOnCloseRequest((WindowEvent event) -> {
-            timeline.play();
-        });
-        phoneStage.show();
     }
 
     @FXML
@@ -913,13 +891,6 @@ public class GamePlayController implements Initializable {
     }
 
     public void handlePlayButton(ActionEvent actionEvent) {
-        audiences.setVisible(true);
-        phone.setVisible(true);
-        fiftyfifty.setVisible(true);
-        audiences.setDisable(false);
-        phone.setDisable(false);
-        fiftyfifty.setDisable(false);
-        //
         questionField.setVisible(true);
         playButton.setVisible(false);
         clockSetup();

@@ -98,3 +98,31 @@
 .btn:hover{
     -fx-background-color: linear-gradient(to bottom right, #0fb565, #399a8f); 
 }
+
+.data-point-popup {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+    -fx-padding: 4px;
+    -fx-font-size: 12px;
+}
+
+.data-point-popup-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.chart-area-symbol {
+    -fx-background-color: #2196F3; /* Replace with your desired color */
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-opacity: 0;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.5) , 3,0,0,1 );
+}
+
+.chart-area-symbol:hover {
+    -fx-opacity: 1;
+}

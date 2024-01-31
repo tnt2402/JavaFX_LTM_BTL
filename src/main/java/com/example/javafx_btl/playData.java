@@ -11,4 +11,6 @@ public class playData {
     String room;
 
     List<String> listQuestions;
+
+    String md5sum;
 }
