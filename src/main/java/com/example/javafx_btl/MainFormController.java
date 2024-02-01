@@ -432,7 +432,7 @@ public class MainFormController implements Initializable {
         TableColumn<PlayHistoryEntry, String> questionsColumn = new TableColumn<>("Questions");
         questionsColumn.setCellValueFactory(new PropertyValueFactory<>("lastQuestion"));
 
-        TableColumn<PlayHistoryEntry, String> md5SumColumn = new TableColumn<>("MD5 Sum");
+        TableColumn<PlayHistoryEntry, String> md5SumColumn = new TableColumn<>("1 vs 1");
         md5SumColumn.setCellValueFactory(new PropertyValueFactory<>("competitiveMode"));
 
         // Add the columns to the table
@@ -458,9 +458,9 @@ public class MainFormController implements Initializable {
 
             String timeUsage = i.get("Time_Usage").toString();
             String lastQuestion = i.get("Last_Question").toString();
-            String competitiveMode = i.get("competitiveMode").toString();
+//            String competitiveMode = i.get("competitiveMode").toString();
 
-            PlayHistoryEntry entry = new PlayHistoryEntry(formattedDate, timeUsage, lastQuestion, competitiveMode);
+            PlayHistoryEntry entry = new PlayHistoryEntry(formattedDate, timeUsage, lastQuestion, "win");
             historyTable.getItems().add(entry);
         }
 
